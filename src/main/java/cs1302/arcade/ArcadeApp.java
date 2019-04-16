@@ -57,7 +57,7 @@ public class ArcadeApp extends Application {
          * (rectangle) in a group.
          */
 
-        r.setX(310);                                // 50px in the x direction (right)
+        r.setX(300);                                // 50px in the x direction (right)
         r.setY(440);                                // 50ps in the y direction (down)
         group.getChildren().add(r);                // add to main container
         r.setOnMouseClicked(createMouseHandler()); // clicks on the rectangle move it randomly
