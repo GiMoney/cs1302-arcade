@@ -41,8 +41,8 @@ public class ArcadeApp extends Application {
     private EventHandler<? super KeyEvent> createKeyHandler() {
 	return event -> {
 	    System.out.println(event);
-	    if (event.getCode() == KeyCode.LEFT)  r.setX(r.getX() - 10.0);
-	    if (event.getCode() == KeyCode.RIGHT) r.setX(r.getX() + 10.0);
+	    if (event.getCode() == KeyCode.LEFT)  r.setX(r.getX() - 20.0);
+	    if (event.getCode() == KeyCode.RIGHT) r.setX(r.getX() + 20.0);
 	    // TODO bounds checking
 	};
     } // createKeyHandler
@@ -57,8 +57,8 @@ public class ArcadeApp extends Application {
          * (rectangle) in a group.
          */
 
-        r.setX(50);                                // 50px in the x direction (right)
-        r.setY(50);                                // 50ps in the y direction (down)
+        r.setX(310);                                // 50px in the x direction (right)
+        r.setY(440);                                // 50ps in the y direction (down)
         group.getChildren().add(r);                // add to main container
         r.setOnMouseClicked(createMouseHandler()); // clicks on the rectangle move it randomly
         group.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
