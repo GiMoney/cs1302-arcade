@@ -64,7 +64,7 @@ public class ArcadeApp extends Application {
         group.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
 
         Scene scene = new Scene(group, 640, 480);
-        stage.setTitle("cs1302-arcade!");
+        stage.setTitle("Space Invaders!");
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
