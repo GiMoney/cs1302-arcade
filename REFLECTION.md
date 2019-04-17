@@ -15,8 +15,8 @@ that the Markdown is transformed into nice looking HTML.
 
 2. **TODO:** Beginning files and code for the Space Invaders game and hopefully
    have a basic running 2048 game that has most of the assets compelete and ready
-   to test.
+   to test. Also further test the 2048 game and add more features.
 
 3. **PROB:** We had difficulty structuring the 2048 game in the beginning, resulting
    in us restarting the code due to seeing problems in the future with our current
-   strategy.
+   strategy. Busy week of testing has resulted in us having hard time meeting.
