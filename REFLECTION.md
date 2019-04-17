@@ -11,8 +11,12 @@ Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
 
 1. **DONE:** Downloaded the skeleton code.
 
-2. **TODO:** Finish reading the project description.
+2. **DONE:** Decided on the 2 games to work on. Group 1: Space Invaders Group 2: 2048
+    
+3. **TODO:** Finish reading the project description.
 
-3. **PROB:** Had a hard time scheduling physicial meetings with each other at
+4. **PROB:** Had a hard time scheduling physicial meetings with each other at
    first, but now that we've settled on a regular day/time things are looking
    great!
+
+
