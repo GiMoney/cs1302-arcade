@@ -56,13 +56,20 @@ public class ArcadeApp extends Application {
          * simple sample code for mouse and keyboard interactions with a node
          * (rectangle) in a group.
          */
+<<<<<<< HEAD
 
         r.setX(300);                                // 50px in the x direction (right)
         r.setY(440);                                // 50ps in the y direction (down)
+=======
+	/*
+        r.setX(50);                                // 50px in the x direction (right)
+        r.setY(50);                                // 50ps in the y direction (down)
+>>>>>>> b301475f6e38a4acf58e433e9039706e60e3dd30
         group.getChildren().add(r);                // add to main container
         r.setOnMouseClicked(createMouseHandler()); // clicks on the rectangle move it randomly
         group.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
-
+	*/
+	Board2048 group = new Board2048();
         Scene scene = new Scene(group, 640, 480);
         stage.setTitle("Space Invaders!");
         stage.setScene(scene);

@@ -1,3 +1,5 @@
+package cs1302.arcade;
+
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -13,7 +15,8 @@ public class Board2048 extends Group {
 	board = new Tile[4][4];
 	for(int row = 0; row < board.length; row++) {
 	    for(int col = 0; col < board[row].length; col++) {
-		board[row][col] = new Tile(row * 100, col * 100);
+		board[row][col] = new Tile(row, col);
+		this.getChildren().add(board[row][col]);
 	    }//for - goes through columns
 	}//for - goes through rows
     }//board constructor
@@ -30,11 +33,11 @@ public class Board2048 extends Group {
 	board[x][y] = t;
     }//randTile
 
-    public class Tile extends Rectangle {
+    class Tile extends Rectangle {
 	private int number;
 
 	public Tile(int x, int y) {
-	    super(x, y, 100, 100);
+	    super((x * 100) + (x * 10), (y * 100) + (y * 10), 100, 100);
 	    number = 0;
 	    this.setFill(Color.GRAY);
 	}//empty Tile constructor
