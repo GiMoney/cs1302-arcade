@@ -47,32 +47,40 @@ public class Board2048 extends Group {
 
     public void up() {
 	for(int row = 0; row < board.length; row++) {
-	    for(int col = board[row].length - 1; col > 0; col--) {
-		this.move(row, col, row, col - 1);
+	    for(int col = 1; col < board[row].length; col++) {
+		for(int i = col; i > 0; i--) {
+		    this.move(row, i, row, i - 1);
+		}
 	    }
 	}//for
     }//left
 
     public void down() {
 	for(int row = 0; row < board.length; row++) {
-	    for(int col = 0; col < board[row].length - 1; col++) {
-		this.move(row, col, row, col + 1);
+	    for(int col = board[row].length - 2; col >= 0; col--) {
+		for(int i = col; i < board.length - 1; i++) {
+		    this.move(row, i, row, i + 1);
+		}
 	    }
 	}//for
     }//right
 
     public void right() {
 	for(int col = 0; col < board[0].length; col++) {
-	    for(int row = 0; row < board.length - 1; row++) {
-		this.move(row, col, row + 1, col);
+	    for(int row = board.length - 2; row >= 0; row--) {
+		for(int i = row; i < board.length - 1; i++) {
+		    this.move(i, col, i + 1, col);
+		}
 	    }
 	}//for
     }//up
 
     public void left() {
 	for(int col = 0; col < board[0].length; col++) {
-	    for(int row = board.length - 1; row > 0; row--) {
-		this.move(row, col, row - 1, col);
+	    for(int row = 1; row < board.length; row++) {
+		for(int i = row; i > 0; i--) {
+		    this.move(i, col, i - 1, col);
+		}
 	    }
 	}//for
     }//down
@@ -82,7 +90,12 @@ public class Board2048 extends Group {
 	    board[x2][y2].setNum(board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
 	    System.out.println("moved");
-	}//if
+	}else if(!board[x1][y1].isEmpty() && !board[x2][y2].isEmpty()) {
+	    board[x2][y2].setNum(board[x2][y2].getNum() +
+				 board[x1][y1].getNum());
+	    board[x1][y1].setNum(0);
+	    System.out.println("joined");
+	}
     }//move
 
     public void randTile() {
@@ -117,7 +130,7 @@ public class Board2048 extends Group {
 	    if(num == 0) {
 		this.setFill(Color.GRAY);
 	    }else {
-		Image i = new Image("https://i.imgur.com/549HPyH.jpg");
+		Image i = new Image("2048/" + num + ".jpg");
 		this.setFill(new ImagePattern(i));
 	    }
 	}//setNum
