@@ -24,6 +24,7 @@ public class Board2048 extends Group {
 	}//for - goes through rows
 	this.randTile();
 	this.randTile();
+	this.setOnKeyPressed(this.createKeyEvent());
     }//board constructor
 
     public EventHandler<? super KeyEvent> createKeyEvent() {
@@ -44,42 +45,43 @@ public class Board2048 extends Group {
 	};
     }//createKeyEvent
 
-    public void left() {
+    public void up() {
 	for(int row = 0; row < board.length; row++) {
-	    for(int col = 1; col < board[row].length; col++) {
-		move(row, col, row, col - 1);
-	    }//for
+	    for(int col = board[row].length - 1; col > 0; col--) {
+		this.move(row, col, row, col - 1);
+	    }
 	}//for
     }//left
 
-    public void right() {
+    public void down() {
 	for(int row = 0; row < board.length; row++) {
-	    for(int col = board[row].length - 2; col >= 0; col--) {
-		move(row, col, row, col + 1);
-	    }//for
+	    for(int col = 0; col < board[row].length - 1; col++) {
+		this.move(row, col, row, col + 1);
+	    }
 	}//for
     }//right
 
-    public void up() {
+    public void right() {
 	for(int col = 0; col < board[0].length; col++) {
-	    for(int row = board.length - 2; row >= 0; row--) {
-		move(row, col, row + 1, col);
-	    }//for
+	    for(int row = 0; row < board.length - 1; row++) {
+		this.move(row, col, row + 1, col);
+	    }
 	}//for
     }//up
 
-    public void down() {
+    public void left() {
 	for(int col = 0; col < board[0].length; col++) {
-	    for(int row = 1; col < board.length; row++) {
-		move(row, col, row - 1, col);
-	    }//for
+	    for(int row = board.length - 1; row > 0; row--) {
+		this.move(row, col, row - 1, col);
+	    }
 	}//for
     }//down
 
     private void move(int x1, int y1, int x2, int y2) {
-	if(board[x2][y2].isEmpty() && !board[x1][x2].isEmpty()) {
-	    board[x2][y2].setNum(board[x1][x2].getNum());
+	if(board[x2][y2].isEmpty() && !board[x1][y1].isEmpty()) {
+	    board[x2][y2].setNum(board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
+	    System.out.println("moved");
 	}//if
     }//move
 
@@ -112,8 +114,12 @@ public class Board2048 extends Group {
 
 	public void setNum(int num) {
 	    number = num;
-	    Image i = new Image("https://i.imgur.com/549HPyH.jpg");
-	    this.setFill(new ImagePattern(i));
+	    if(num == 0) {
+		this.setFill(Color.GRAY);
+	    }else {
+		Image i = new Image("https://i.imgur.com/549HPyH.jpg");
+		this.setFill(new ImagePattern(i));
+	    }
 	}//setNum
 
 	public int getNum() {
