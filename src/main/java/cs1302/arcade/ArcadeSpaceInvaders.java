@@ -125,6 +125,7 @@ public class ArcadeSpaceInvaders extends Application{
         i.setFitWidth(50);
         return i;
     }
+
     public ImageView monster(double x, double y) {
         String url1 = "http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png";
         ImageView i = new ImageView(new Image(url1));
