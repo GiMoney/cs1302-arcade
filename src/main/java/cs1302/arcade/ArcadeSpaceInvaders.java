@@ -115,35 +115,6 @@ public class ArcadeSpaceInvaders extends Application{
     public int rand(int min, int max) {
         return (int)(Math.random() * max + min);
     }
-    
-    public void monstersMove() {
-        //MONSTERS MOVING
-        double speed;
- 
-        if(toRight)
-            speed = 0.5;
-        else
-            speed = - 0.5;
-       
-        if(dotR.getLayoutX() >= 40) {
-            toRight = false;
-            for(int i = 0; i < monsters.size(); i++) {
-                monsters.get(i).setLayoutY(monsters.get(i).getLayoutY() + 10);
-            }
-           
-        }
-        if(dotR.getLayoutX() <= -20) {
-            toRight = true;
-            for(int i = 0; i < monsters.size(); i++) {
-                monsters.get(i).setLayoutY(monsters.get(i).getLayoutY() + 10);
-            }
-        }
-       
-        for(int i = 0; i < monsters.size(); i++) {
-            monsters.get(i).setLayoutX(monsters.get(i).getLayoutX() + speed);
-        }
-        dotR.setLayoutX(dotR.getLayoutX() + speed);
-    }
    
     public ImageView player() {
         String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
