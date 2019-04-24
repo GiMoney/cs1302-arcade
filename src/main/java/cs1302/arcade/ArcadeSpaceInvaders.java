@@ -23,7 +23,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
+//Some of this code was used as reference will not use in final submission
+// Just used to test to see if code worked.
 /**
  *This is Arcade game called Space Invaders
  * probably will change dramatically
