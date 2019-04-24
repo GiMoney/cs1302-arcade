@@ -23,7 +23,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ArcadeSpaceInvaders extends Application{
+
+/**
+ *This is Arcade game called Space Invaders
+ * probably will change dramatically
+ */
+ public class ArcadeSpaceInvaders extends Application{
     AnimationTimer timer; // animationt imer
     Pane root = new Pane(); // makes a pane
     List<ImageView> monsters = new ArrayList<ImageView>();
@@ -34,14 +39,19 @@ public class ArcadeSpaceInvaders extends Application{
     Text points; // the points
     int numPoints = 0; // the number of points
     int numLives = 10; // the number of lives
- 
+
+     /**
+      *This is the main
+      */
     public static void main(String[] args) {
         launch(); // launches the game
     }
 
-    
+     /**
+      *This creates my stage that holds all the magic  
+      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage stage) throws Exception {
        
         //life and points       
         lives = new Text("Lives: 10");
@@ -93,7 +103,7 @@ public class ArcadeSpaceInvaders extends Application{
            
         });
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Space Invaders");
+        primaryStage.setTitle("Welcome to Space Invaders");
         primaryStage.show();
        
     }
@@ -111,23 +121,24 @@ public class ArcadeSpaceInvaders extends Application{
  
    
     public ImageView player() {
-        //make sure to change later
+        //make sure to change later because image is ugly
         String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
         ImageView i = new ImageView(new Image(url));
         i.setLayoutX(225);
         i.setLayoutY(0);
-        i.setFitHeight(50);
-        i.setFitWidth(50);
+        i.setFitHeight(100);
+        i.setFitWidth(100);
         return i;
     }
 
     public ImageView monster(double x, double y) {
+  
         String url1 = "http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png";
         ImageView i = new ImageView(new Image(url1));
         i.setLayoutX(x);
         i.setLayoutY(y);
-        i.setFitHeight(50);
-        i.setFitWidth(50);
+        i.setFitHeight(100);
+        i.setFitWidth(100);
         return i;
     }
  
@@ -138,7 +149,7 @@ public void isWin(){
           text.setX(180);
           text.setY(300);    
           text.setFill(Color.GOLD);
-          text.setStrokeWidth(3);
+          text.setStrokeWidth(2);
           text.setStroke(Color.WHITE);        
           text.setText("YOU WIN");
           root.getChildren().add(text);
@@ -153,7 +164,7 @@ public void isLost(){
           text.setX(180);
           text.setY(300);    
           text.setFill(Color.WHITE);
-          text.setStrokeWidth(3);
+          text.setStrokeWidth(2);
           text.setStroke(Color.RED);        
           text.setText("YOU LOST");
           root.getChildren().add(text);
