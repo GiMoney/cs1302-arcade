@@ -65,7 +65,7 @@ public class ArcadeSpaceInvaders extends Application{
         player = player();
         root.getChildren().add(player);
        
-        //create monsters
+ 
         
        
         //AnimationTimer
