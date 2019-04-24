@@ -24,22 +24,22 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ArcadeSpaceInvaders extends Application{
-    AnimationTimer timer;
-    Pane root = new Pane();
+    AnimationTimer timer; // animationt imer
+    Pane root = new Pane(); // makes a pane
     List<ImageView> monsters = new ArrayList<ImageView>();
-    ImageView player;
-    Circle dotR = new Circle();
-    boolean toRight = true;
-    Text lives;
-    Text points;
-    int numPoints = 0;
-    int numLives = 3;
+    ImageView player; // player
+    Circle dotR = new Circle(); // for the pew pew
+    boolean toRight = true; 
+    Text lives; // the lives
+    Text points; // the points
+    int numPoints = 0; // the number of points
+    int numLives = 10; // the number of lives
  
     public static void main(String[] args) {
-        launch();
- 
+        launch(); // launches the game
     }
- 
+
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
        
@@ -47,26 +47,23 @@ public class ArcadeSpaceInvaders extends Application{
         lives = new Text("Lives: 10");
         lives.setLayoutX(20);
         lives.setLayoutY(30);
-        lives.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        lives.setFont(Font.font("verdana", FontWeight.ITALIC,FontPosture.REGULAR, 20));
         lives.setFill(Color.GREEN);
         points = new Text("Points: 0");
         points.setLayoutX(350);
         points.setLayoutY(30);
-        points.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        points.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 20));
         points.setFill(Color.GOLD);
         root.getChildren().addAll(lives, points);
        
         //dot that regulates moving of monsters
         dotR.setLayoutX(0);
        
-        //creating player
+        //player
         player = player();
         root.getChildren().add(player);
        
  
-        
-       
-        //AnimationTimer
         timer = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
@@ -88,10 +85,10 @@ public class ArcadeSpaceInvaders extends Application{
         //moving player
         scene.setOnKeyPressed(e->{
             if(e.getCode() == KeyCode.RIGHT) {
-                player.setLayoutX(player.getLayoutX() + 10);
+                player.setLayoutX(player.getLayoutX() + 8);
             }
             if(e.getCode() == KeyCode.LEFT) {
-                player.setLayoutX(player.getLayoutX() - 10);
+                player.setLayoutX(player.getLayoutX() - 8);
             }
            
         });
@@ -111,15 +108,14 @@ public class ArcadeSpaceInvaders extends Application{
     }
    
  
-    public int rand(int min, int max) {
-        return (int)(Math.random() * max + min);
-    }
+ 
    
     public ImageView player() {
+        //make sure to change later
         String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
         ImageView i = new ImageView(new Image(url));
         i.setLayoutX(225);
-        i.setLayoutY(225);
+        i.setLayoutY(0);
         i.setFitHeight(50);
         i.setFitWidth(50);
         return i;
@@ -138,12 +134,12 @@ public class ArcadeSpaceInvaders extends Application{
 public void isWin(){
     if(monsters.isEmpty()) {
           Text text = new Text();
-          text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
+          text.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 50));
           text.setX(180);
           text.setY(300);    
-          text.setFill(Color.WHITE);
+          text.setFill(Color.GOLD);
           text.setStrokeWidth(3);
-          text.setStroke(Color.GOLD);        
+          text.setStroke(Color.WHITE);        
           text.setText("YOU WIN");
           root.getChildren().add(text);
           timer.stop();
@@ -153,7 +149,7 @@ public void isWin(){
 public void isLost(){
     if(numLives <= 0) {
           Text text = new Text();
-          text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
+          text.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 50));
           text.setX(180);
           text.setY(300);    
           text.setFill(Color.WHITE);
