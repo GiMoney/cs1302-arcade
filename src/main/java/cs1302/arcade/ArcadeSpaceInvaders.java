@@ -43,8 +43,7 @@ public class ArcadeSpaceInvaders extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
        
-        //life and points
-       
+        //life and points       
         lives = new Text("Lives: 10");
         lives.setLayoutX(20);
         lives.setLayoutY(30);
