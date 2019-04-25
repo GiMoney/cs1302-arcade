@@ -58,12 +58,12 @@ import javafx.util.Duration;
         lives = new Text("Lives: 10");
         lives.setLayoutX(20);
         lives.setLayoutY(30);
-        lives.setFont(Font.font("verdana", FontWeight.ITALIC,FontPosture.REGULAR, 20));
+        lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
         lives.setFill(Color.GREEN);
         points = new Text("Points: 0");
         points.setLayoutX(350);
         points.setLayoutY(30);
-        points.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 20));
+        points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
         points.setFill(Color.GOLD);
         root.getChildren().addAll(lives, points);
        
@@ -103,15 +103,15 @@ import javafx.util.Duration;
             }
            
         });
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Welcome to Space Invaders");
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.setTitle("Welcome to Space Invaders");
+        stage.show();
        
     }
    
     public void gameUpdate() {
      
-        monstersMove();
+        //monstersMove();
         //is Player win
         isWin();
         //is Player lost
@@ -146,7 +146,7 @@ import javafx.util.Duration;
 public void isWin(){
     if(monsters.isEmpty()) {
           Text text = new Text();
-          text.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 50));
+          text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 50));
           text.setX(180);
           text.setY(300);    
           text.setFill(Color.GOLD);
@@ -161,7 +161,7 @@ public void isWin(){
 public void isLost(){
     if(numLives <= 0) {
           Text text = new Text();
-          text.setFont(Font.font("verdana", FontWeight.ITALIC, FontPosture.REGULAR, 50));
+          text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 50));
           text.setX(180);
           text.setY(300);    
           text.setFill(Color.WHITE);
