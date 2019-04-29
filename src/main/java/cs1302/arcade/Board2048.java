@@ -53,6 +53,7 @@ public class Board2048 extends Group {
 		}
 	    }
 	}//for
+	this.randTile();
     }//left
 
     public void down() {
@@ -63,6 +64,7 @@ public class Board2048 extends Group {
 		}
 	    }
 	}//for
+	this.randTile();
     }//right
 
     public void right() {
@@ -73,6 +75,7 @@ public class Board2048 extends Group {
 		}
 	    }
 	}//for
+	this.randTile();
     }//up
 
     public void left() {
@@ -83,6 +86,7 @@ public class Board2048 extends Group {
 		}
 	    }
 	}//for
+	this.randTile();
     }//down
 
     private void move(int x1, int y1, int x2, int y2) {
@@ -90,7 +94,8 @@ public class Board2048 extends Group {
 	    board[x2][y2].setNum(board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
 	    System.out.println("moved");
-	}else if(!board[x1][y1].isEmpty() && !board[x2][y2].isEmpty()) {
+	}else if(!board[x1][y1].isEmpty() && !board[x2][y2].isEmpty() &&
+		 board[x1][y1].getNum() == board[x2][y2].getNum()) {
 	    board[x2][y2].setNum(board[x2][y2].getNum() +
 				 board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
