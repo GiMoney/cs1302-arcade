@@ -78,7 +78,6 @@ public class ArcadeApp extends Application {
         Scene sceneArcade = new Scene(hbox, 640, 480);
 
         Board2048 group = new Board2048();
-	//Scene scene2048 = new Scene(group, 500, 500);
 	Arcade2048 scene2048 = new Arcade2048(new Board2048(), sceneArcade);
 	play2048.setOnAction(e -> {
 		stage.setScene(scene2048);
@@ -87,10 +86,13 @@ public class ArcadeApp extends Application {
 		scene2048.getBoard().requestFocus();
 	    });
 
-	/*
-	ArcadeSpaceInvaders gameSpace = new ArcadeSpaceInvaders();
-	Scene sceneSpace = new Scene(gameSpace, 640, 480);
-	*/
+	
+	ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders();
+	playSpace.setOnAction(e -> {
+		stage.setScene(sceneSpace);
+		stage.setTitle("Space Invaders!");
+		stage.sizeToScene();
+	    });
 	
         stage.setTitle("Arcade!");
         stage.setScene(sceneArcade);

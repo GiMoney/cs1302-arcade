@@ -29,9 +29,9 @@ import javafx.util.Duration;
  *This is Arcade game called Space Invaders
  * probably will change dramatically
  */
- public class ArcadeSpaceInvaders extends Application{
+ public class ArcadeSpaceInvaders extends Scene{
     AnimationTimer timer; // animationt imer
-    Pane root = new Pane(); // makes a pane
+     Pane root = new Pane(); // makes a pane
     List<ImageView> monsters = new ArrayList<ImageView>();
     ImageView player; // player
     Circle dotR = new Circle(); // for the pew pew
@@ -42,17 +42,12 @@ import javafx.util.Duration;
     int numLives = 10; // the number of lives
 
      /**
-      *This is the main
-      */
-    public static void main(String[] args) {
-        launch(); // launches the game
-    }
-
-     /**
       *This creates my stage that holds all the magic  
       */
-    @Override
-    public void start(Stage stage) throws Exception {
+    public ArcadeSpaceInvaders() {
+	super(new Pane(), 500, 700);
+	this.setRoot(root);
+	this.setFill(Color.BLACK);
        
         //life and points       
         lives = new Text("Lives: 10");
@@ -66,7 +61,7 @@ import javafx.util.Duration;
         points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
         points.setFill(Color.GOLD);
         root.getChildren().addAll(lives, points);
-       
+	
         //dot that regulates moving of monsters
         dotR.setLayoutX(0);
        
@@ -90,11 +85,8 @@ import javafx.util.Duration;
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
        
-        //setting up stage
-        Scene scene = new Scene(root, 500, 700);
-        scene.setFill(Color.BLACK);
         //moving player
-        scene.setOnKeyPressed(e->{
+        this.setOnKeyPressed(e->{
             if(e.getCode() == KeyCode.RIGHT) {
                 player.setLayoutX(player.getLayoutX() + 8);
             }
@@ -103,10 +95,6 @@ import javafx.util.Duration;
             }
            
         });
-        stage.setScene(scene);
-        stage.setTitle("Welcome to Space Invaders");
-        stage.show();
-       
     }
    
     public void gameUpdate() {
