@@ -5,6 +5,24 @@ for this project. Please keep this document organized using Markdown. If you
 click on this file in your team's GitHub repository website, then you will see
 that the Markdown is transformed into nice looking HTML.
 
+## TUE 2019-04-30 @ 10:30 PM EST
+
+ 1. **DONE:** We have gotten a lot of work done and just need to do more in Space Invaders
+    and a little more to complete 2048. We also implemented the starting screen
+    that shows the two buttons to swap between scenes. Specifically with each game,
+    Space Invaders has some progress with all the assets and the monsters and how the general
+    layout of the game is. In 2048, the game moves and merges around perfectly (except for some
+    minor problems).
+
+ 2. **TODO:** For 2048, we need to finish up implementing the high score, win and lose
+    conditions, and general improvement when running it with threads. For Space Invaders, we have
+    to complete the movement, finish up hit detection with bullets, and bug fixes. Also need
+    to beautify the main screen to be more presentable.
+
+ 3. **PROB:** Gi is still having trouble moving the monsters and fixing up the bullet and
+    hit detection for the bullets. Kyle is trying to deal with "empty moves" in 2048 when an illegal
+    move spawns another random tile. Overall peformance needs to improve also.
+
 ## TUE 2019-04-23 @ 10:10 PM EST
 
  1. **DONE:** We got a bit of work done mainly on 2048 and space invaders. Kyle managed to combine and merge
@@ -18,12 +36,10 @@ that the Markdown is transformed into nice looking HTML.
     I was not able to fully test it. Need to get space invaders running smoothly.
     
  3. **PROB:** I had  a hard time moving all the tiles together in 2048
-    and remember to commit with the tag .
-        
- 4. **PROB:** Had a hard time getting space invaders to run and show key components
-    such as the player or the moster. Also haveing a hard time with the shooting method
-    I need to make, including detecting when it hits
-
+    and remember to commit with the tag. Had a hard time getting space
+    invaders to run and show key components such as the player or the monster.
+    Also haveing a hard time with the shooting method.
+    I need to make, including detecting when it hits.
     
 ## TUE 2019-04-16 @ 8:00 PM EST
 
@@ -37,18 +53,5 @@ that the Markdown is transformed into nice looking HTML.
    have a basic running 2048 game that has most of the assets compelete and ready
    to test. Also further test the 2048 game and add more features.
 
-<<<<<<< HEAD
-2. **DONE:** Decided on the 2 games to work on. Group 1: Space Invaders Group 2: 2048
-    
-3. **TODO:** Finish reading the project description.
-
-4. **PROB:** Had a hard time scheduling physicial meetings with each other at
-   first, but now that we've settled on a regular day/time things are looking
-   great!
-
-
-=======
 3. **PROB:** We had difficulty structuring the 2048 game in the beginning, resulting
-   in us restarting the code due to seeing problems in the future with our current
-   strategy. Busy week of testing has resulted in us having hard time meeting.
->>>>>>> b301475f6e38a4acf58e433e9039706e60e3dd30
+   in us restarting the code due to seeing problems in the future with our current strategy.
