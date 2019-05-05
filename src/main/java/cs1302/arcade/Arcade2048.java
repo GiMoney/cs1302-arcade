@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -22,8 +23,12 @@ public class Arcade2048 extends Scene {
 	menubar.getMenus().add(options);
 	MenuItem close = new MenuItem("Close");
 	close.setOnAction(e -> {
-		Stage swap = (Stage) this.getWindow();
-		swap.setScene(main);
+		Thread t = new Thread(() -> {
+			Stage swap = (Stage) this.getWindow();
+			Platform.runLater(() -> swap.setScene(main));
+		});
+		t.setDaemon(true);
+		t.start();
 	    });
 	options.getItems().add(close);
 	vbox.getChildren().addAll(menubar, board);

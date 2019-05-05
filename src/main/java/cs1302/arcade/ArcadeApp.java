@@ -60,18 +60,6 @@ public class ArcadeApp extends Application {
          * simple sample code for mouse and keyboard interactions with a node
          * (rectangle) in a group.
          */
-
-        //r.setX(300);                                // 50px in the x direction (right)
-        //r.setY(440);                                // 50ps in the y direction (down)
-
-	/*
-        r.setX(50);                                // 50px in the x direction (right)
-        r.setY(50);                                // 50ps in the y direction (down)
-        group.getChildren().add(r);                // add to main container
-        r.setOnMouseClicked(createMouseHandler()); // clicks on the rectangle move it randomly
-        group.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
-	*/
-	//hbox
         Button play2048 = new Button("Play 2048!");
         Button playSpace = new Button("Play Space Invaders!");
         hbox.getChildren().addAll(play2048, playSpace);
@@ -80,18 +68,26 @@ public class ArcadeApp extends Application {
         Board2048 group = new Board2048();
 	Arcade2048 scene2048 = new Arcade2048(new Board2048(), sceneArcade);
 	play2048.setOnAction(e -> {
-		stage.setScene(scene2048);
-		stage.setTitle("2048!");
-		stage.sizeToScene();
-		scene2048.getBoard().requestFocus();
+		Thread t = new Thread(() -> {
+			Platform.runLater(() -> stage.setScene(scene2048));
+			Platform.runLater(() -> stage.setTitle("2048!"));
+			Platform.runLater(() -> stage.sizeToScene());
+			scene2048.getBoard().requestFocus();
+		});
+		t.setDaemon(true);
+		t.start();
 	    });
 
 	
 	ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders();
 	playSpace.setOnAction(e -> {
-		stage.setScene(sceneSpace);
-		stage.setTitle("Space Invaders!");
-		stage.sizeToScene();
+		Thread t = new Thread(() -> {
+			stage.setScene(sceneSpace);
+			stage.setTitle("Space Invaders!");
+			stage.sizeToScene();
+		});
+		t.setDaemon(true);
+		t.start();
 	    });
 	
         stage.setTitle("Arcade!");

@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -50,19 +51,24 @@ public class Board2048 extends Group {
      */
     private EventHandler<? super KeyEvent> createKeyEvent() {
 	return event -> {
-	    System.out.println(event);
-	    if(event.getCode() == KeyCode.LEFT) {
-		this.left();
-	    }//if - left key to move left
-	    if(event.getCode() == KeyCode.RIGHT) {
-		this.right();
-	    }//if - right key to move right
-	    if(event.getCode() == KeyCode.UP) {
-		this.up();
-	    }//if - up key to move up
-	    if(event.getCode() == KeyCode.DOWN) {
-		this.down();
-	    }//if - down key to move down
+	    Runnable r = () -> {
+		System.out.println(event);
+		if(event.getCode() == KeyCode.LEFT) {
+		    this.left();
+		}//if - left key to move left
+		if(event.getCode() == KeyCode.RIGHT) {
+		    this.right();
+		}//if - right key to move right
+		if(event.getCode() == KeyCode.UP) {
+		    this.up();
+		}//if - up key to move up
+		if(event.getCode() == KeyCode.DOWN) {
+		    this.down();
+		}//if - down key to move down
+	    };
+	    Thread t = new Thread(r);
+	    t.setDaemon(true);
+	    t.start();
 	};
     }//createKeyEvent
 
