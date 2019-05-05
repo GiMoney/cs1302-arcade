@@ -1,8 +1,5 @@
 package cs1302.arcade;
 
-
-
-
 import java.util.ArrayList;
 import java.util.List; 
 import javafx.animation.Animation;
@@ -34,8 +31,12 @@ import javafx.*;
 import java.awt.geom.Area;
 import java.util.*;
 import java.util.Optional;
-//Some of this code was used as reference will not use in final submission
-// Just used to test to see if code worked.
+import javafx.scene.control.Alert;
+//import javafx.scene.control.Alert.AlertType;
+//import javafx.scene.control.ButtonType;
+
+
+
 
 /**
  *This is Arcade game called Space Invaders
@@ -60,135 +61,179 @@ public class ArcadeSpaceInvaders extends Scene{
     int numLives = 3; // the number of lives
     boolean moveleft;
     boolean movedown =false;
-    int pressed = 0;
+    int pressed,mpress = 0;
     Shell[] shell = new Shell[4];
     int killed =0;
 //     double enemyspeed = 2.0;
+    boolean game = true;
 /**
  *This creates my stage that holds all the magic  
  */
     public ArcadeSpaceInvaders() {
         super(new Pane(), 600, 500);
-        this.setRoot(root);
-
-        root.setStyle("-fx-background-color: black;");
-
-        
-       //life and points       
-        lives = new Text("Lives: 3");
-        lives.setLayoutX(20);
-        lives.setLayoutY(30);
-        lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
-        lives.setFill(Color.GREEN);
-        points = new Text("Points: 0");
-        points.setLayoutX(470);
-        points.setLayoutY(30);
-        points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
-        points.setFill(Color.GOLD);
-        root.getChildren().addAll(lives, points);
+//        if(game){
+            
+            this.setRoot(root);
+            
+            root.setStyle("-fx-background-color: black;");
+            
+            
+            //life and points       
+            lives = new Text("Lives: 3");
+            lives.setLayoutX(20);
+            lives.setLayoutY(30);
+            lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
+            lives.setFill(Color.GREEN);
+            points = new Text("Points: 0");
+            points.setLayoutX(470);
+            points.setLayoutY(30);
+            points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
+            points.setFill(Color.GOLD);
+            root.getChildren().addAll(lives, points);
 	
        
 
     
-        //player
-        player = player();
+            //player
+            player = player();
   
-        root.getChildren().add(player);
-        for(int i =0;i < 6;i++){
-            for(int j = 0;j<6;j++){
+            root.getChildren().add(player);
+            for(int i =0;i < 6;i++){
+                for(int j = 0;j<6;j++){
             
-                monsters[i][j] = new Monster(i,j);
-                root.getChildren().add(monsters[i][j]);
-            }
+                    monsters[i][j] = new Monster(i,j);
+                    root.getChildren().add(monsters[i][j]);
+                }
         
-        }
+            }
 
-        for(int i = 0; i<4;i++){
-            shell[i] = new Shell(i,375);
-            root.getChildren().add(shell[i]);
-        }
-    
-        ArrayList bullets = mag;
-        for (int i = 0; i < bullets.size(); i++) {
-            Bullet laser = (Bullet) bullets.get(i);
-            if (laser.isVisible() == true) {
-                laser.update();
-            
-            } else {
-                bullets.remove(i);
+            for(int i = 0; i<4;i++){
+                shell[i] = new Shell(i,375);
+                root.getChildren().add(shell[i]);
             }
-        }
     
-    
-    
-        timer = new AnimationTimer() {
-                @Override
-                public void handle(long arg0) {
-                    gameUpdate();
+            ArrayList bullets = mag;
+            for (int i = 0; i < bullets.size(); i++) {
+                Bullet laser = (Bullet) bullets.get(i);
+                if (laser.isVisible() == true) {
+                    laser.update();
+            
+                } else {
+                    bullets.remove(i);
                 }
-            };
-        timer.start();
+            }
+    
+    
+    
+            timer = new AnimationTimer() {
+                    @Override
+                    public void handle(long arg0) {
+                        gameUpdate();
+                    }
+                };
+            timer.start();
        
-        //timeline for making monsters shoots every few seconds
+            //timeline for making monsters shoots every few seconds
        
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            }));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
         
-        //moving player
-        this.setOnKeyPressed(e->{
-                if(e.getCode() == KeyCode.RIGHT) {
-                    if(player.getLayoutX() == 540){
-                        player.setLayoutX(player.getLayoutX() -15);
-                    }
-                    else{
-                        player.setLayoutX(player.getLayoutX() + 15);
-                    }
-                }
-                if(e.getCode() == KeyCode.LEFT) {
-                    if(player.getLayoutX() == 0){
-                        player.setLayoutX(player.getLayoutX());
-                    }
-                    else{
-                        player.setLayoutX(player.getLayoutX() - 15);
-                    }
-                }
-                if(e.getCode() == KeyCode.SPACE){
-                    shoot();
-                    shoot1();
-                    // dotR = new Rectangle(player.getLayoutX()+20,player.getLayoutY()+5,4,10);
-                    for(int i =pressed; i < mag.size();i++){
-                        root.getChildren().add(mag.get(i));
-                        root.getChildren().add(mag1.get(i));
-                        if(dotR!= null && dotR1 !=null){
-                            update(mag.get(i));
-                            update1(mag1.get(i));
+            //moving player
+            this.setOnKeyPressed(e->{
+                    if(e.getCode() == KeyCode.RIGHT) {
+                        if(player.getLayoutX() == 540){
+                            player.setLayoutX(player.getLayoutX() -15);
+                        }
+                        else{
+                            player.setLayoutX(player.getLayoutX() + 15);
                         }
                     }
-                    pressed++;
-                }
-            });
+                    if(e.getCode() == KeyCode.LEFT) {
+                        if(player.getLayoutX() == 0){
+                            player.setLayoutX(player.getLayoutX());
+                        }
+                        else{
+                            player.setLayoutX(player.getLayoutX() - 15);
+                        }
+                    }
+                    /*       if(true){
+                             shoot1();
+                             try{
+                             for(int i = mpress; i<mag1.size();i++){
+                             if(mag1.get(i) ==null && dotR1 == null){
+                             }
+                             else{
+                             root.getChildren().add(mag1.get(i));
+
+                             }
+                             if(dotR1 !=null){
+                             update1(mag1.get(i));
+                             }
+                             mpress++;
+                             }
+                         
+                             }
+                             catch(Exception o){
+                             }
+
+                             }*/
+                
+                    if(e.getCode() == KeyCode.SPACE){
+                        shoot();
+                        shoot1();
+                        //dotR = new Rectangle(player.getLayoutX()+20,player.getLayoutY()+5,4,10);
+                        for(int i =pressed; i < mag.size();i++){
+                        
+                            root.getChildren().add(mag.get(i));
+                       
+                            // if(dotR!=null){
+                            update(mag.get(i));
+                            //   }
+                            try{
+                                if(mag1.get(i) ==null){
+                                }
+                                else{
+                                    root.getChildren().add(mag1.get(i));
+                            
+                                }
+                                if(dotR1 !=null){
+                            
+                                    update1(mag1.get(i));
+                                }
+                            }
+                            catch(Exception o){
+                            }
+                            pressed++;
+                        }
+                    }
+                
+                });
     }
-    
+
     public void update(Rectangle dotR){
+        // if(dotR == null){
+
+        // }
+        // else{
         boolean visible = true;
         double speed = 7.0;
         double y = dotR.getY();
         y = y - speed;
         dotR.setY(y);
-        if(y >100){
+        if(y <100){
             visible =false;
             // mag.remove(dotR);
         }
         hit(dotR);
         //  for(Monster[] u:monsters){
         //  for(Monster p:u){
-
+        // }
     }
     public void hit(Rectangle dotR) throws NullPointerException{
         boolean killedOnce = false;
-        if(dotR.getY() <100){
+        if(dotR.getY() < 100){
             root.getChildren().remove(dotR);
         }
          
@@ -205,11 +250,11 @@ public class ArcadeSpaceInvaders extends Scene{
                      && ((dotR.getX() < monsters[j][k].getX()+50))
                      && ((dotR.getY() > monsters[j][k].getY())
                          && ((dotR.getY() < monsters[j][k].getY()+50 )))))
-                     
+                    
                 {
                     dotR = null;
                     root.getChildren().remove(dotR); 
-                    
+                     
                       
                     root.getChildren().remove(monsters[j][k]);
                     monsters[j][k] = null;
@@ -239,31 +284,74 @@ public class ArcadeSpaceInvaders extends Scene{
     public void shoot1(){
         Random r = new Random();
         int num = r.nextInt((5 - 0) + 1) + 0;
-        if((monsters[num][num] != null)){
-            dotR1 = new Rectangle(monsters[num][num].getX()-20,monsters[num][num].getY()-5,4,10);
+        if((monsters[num][num] == null)){
+            // dotR1=null;
+            mag1.add(dotR1);
+            
+        }
+        else{
+            //monsters[num][num].setLayoutX(getX());
+            dotR1 = new Rectangle(monsters[num][num].getX(),monsters[num][num].getY(),4,10);
+            if(monsters[num][num].getX() >=530){
+                moveleft = true;
+            }
+            if(monsters[num][num].getX() <= 0){
+                moveleft= false;
+            }
+            
             dotR1.setStroke(Color.RED);
             dotR1.setFill(Color.RED);
             hit1(dotR1);
             mag1.add(dotR1);
         }
-          
     }
+    
     public void update1(Rectangle dotR1){
-        double speed1 = 7.0;
-        double y1 = dotR1.getY();
-        y1 = y1 + speed1;
-        dotR1.setY(y1);
-        hit1(dotR1);
-    }
-    public void hit1(Rectangle dotR1) throws NullPointerException{
-        if( (dotR1.getX() > player.getX())
-            && ((dotR1.getX() < player.getX()+50))
-            && ((dotR1.getY() > player.getY())
-                && ((dotR1.getY() < player.getY()+50 )))){
-            numLives--;
-            lives.setText("Lives: " + String.valueOf(numLives));
-
+        if(dotR1 == null){
+            root.getChildren().remove(dotR1);
         }
+        else{
+            
+                if(dotR1.getY() >=480){
+                    root.getChildren().remove(dotR1);
+                    //dotR1 = null;
+                
+                }else{
+                double speed1 = 7.0;
+                double y1 = dotR1.getY();
+                    y1 = y1 + speed1;
+                    dotR1.setY(y1);
+                    hit1(dotR1);
+            }
+        }
+    }
+    
+    public void hit1(Rectangle dotR1) throws NullPointerException{
+        
+        try{
+
+            for(Rectangle d: mag1){
+                if(d.getY() >=480){
+                    root.getChildren().remove(d);
+                    dotR1 = null;
+                }
+                else if( (d.getX() > player.getX())
+                         && ((d.getX() < player.getX()+100))
+                    && ((d.getY() > player.getY())
+                        && ((d.getY() < player.getY()+100 ))))
+            {
+            player.setLayoutX(225);
+            numLives--;
+           lives.setText("Lives: " + String.valueOf(numLives));
+
+           }
+                //   System.out.println(d.getY());
+                
+            }
+            //System.out.println(mag1.get(i).getY());
+        
+        }catch(Exception p){};
+        
     }
              
  
@@ -284,14 +372,15 @@ public class ArcadeSpaceInvaders extends Scene{
     public void gameUpdate() {
        
         monstersMove(monsters);
-
-        
-        shoot1();
         for(int i = 0; i < mag.size();i++){
             update(mag.get(i));
             hit(mag.get(i));
+            //  if(mag1.get(i) ==null){
+            // }
+            // else{
             update1(mag1.get(i));
             hit1(mag1.get(i));
+            //  }
         }
         //is Player win
         isWin();
@@ -371,9 +460,25 @@ public class ArcadeSpaceInvaders extends Scene{
             text.setText("YOU WIN");
             root.getChildren().add(text);
             timer.stop();
-        }
+            /*Alert a = new Alert(AlertType.NONE);
+            a.setTitle("Space Invaders"); 
+            // set alert type 
+            a.setAlertType(AlertType.CONFIRMATION); 
+            a.setContentText("Press OK if you want to play again else cancel");
+            // show the dialog
+            a.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        game = true;
+                    }
+                    else{
+                        game =false;
+                    }
+                });*/
+        } 
+     
     }
- 
+    
+    
     public void isLost(){
         if(numLives == 10) {
             Text text = new Text();
