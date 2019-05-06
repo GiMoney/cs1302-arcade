@@ -66,35 +66,35 @@ public class ArcadeApp extends Application {
         Scene sceneArcade = new Scene(hbox, 640, 480);
 
         Board2048 group = new Board2048();
-	Arcade2048 scene2048 = new Arcade2048(new Board2048(), sceneArcade);
-	play2048.setOnAction(e -> {
-		Thread t = new Thread(() -> {
-			Platform.runLater(() -> stage.setScene(scene2048));
-			Platform.runLater(() -> stage.setTitle("2048!"));
-			Platform.runLater(() -> stage.sizeToScene());
-			scene2048.getBoard().requestFocus();
-		});
-		t.setDaemon(true);
+        Arcade2048 scene2048 = new Arcade2048(new Board2048(), sceneArcade);
+        play2048.setOnAction(e -> {
+                Thread t = new Thread(() -> {
+                        Platform.runLater(() -> stage.setScene(scene2048));
+                        Platform.runLater(() -> stage.setTitle("2048!"));
+                        Platform.runLater(() -> stage.sizeToScene());
+                        scene2048.getBoard().requestFocus();
+                });
+                t.setDaemon(true);
 		t.start();
-	    });
+            });
 
-	
-	ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders();
-	playSpace.setOnAction(e -> {
-            Thread t = new Thread(() -> {
-                    Platform.runLater(()-> stage.setScene(sceneSpace));
-                    Platform.runLater(() -> stage.setTitle("Space Invaders!"));
-                    Platform.runLater(()->stage.sizeToScene());
-		});
-		t.setDaemon(true);
-		t.start();
-	    });
-	
+        
+        ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders(sceneArcade);
+        playSpace.setOnAction(e -> {
+                Thread t = new Thread(() -> {
+                        Platform.runLater(()-> stage.setScene(sceneSpace));
+                        Platform.runLater(() -> stage.setTitle("Space Invaders!"));
+                        Platform.runLater(()->stage.sizeToScene());
+                });
+                t.setDaemon(true);
+                t.start();
+            });
+        
         stage.setTitle("Arcade!");
         stage.setScene(sceneArcade);
         stage.sizeToScene();
         stage.show();
-
+        
         // the group must request input focus to receive key events
         // @see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html#requestFocus--
         //group.requestFocus();

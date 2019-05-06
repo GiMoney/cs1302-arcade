@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import javafx.application.Platform;
 import java.util.ArrayList;
 import java.util.List; 
 import javafx.animation.Animation;
@@ -34,6 +35,9 @@ import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
 
 
 
@@ -74,13 +78,39 @@ public class ArcadeSpaceInvaders extends Scene{
 /**
  *This creates my stage that holds all the magic  
  */
-    public ArcadeSpaceInvaders() {
+    public ArcadeSpaceInvaders(Scene main) {
         
         super(new Pane(), 600, 500);
         if(game){
             
             this.setRoot(root);
+            MenuBar menubar = new MenuBar();
+            Menu options = new Menu("Options");
+            menubar.getMenus().add(options);
+            MenuItem close = new MenuItem("Close");
+            close.setOnAction(e -> {
+                    Thread t = new Thread(() -> {
+                            Stage swap = (Stage) this.getWindow();
+                            Platform.runLater(() -> swap.setScene(main));
+                    });
+                    t.setDaemon(true);
+                    t.start();
+         });
+            MenuItem newGame = new MenuItem("New Game");
+            newGame.setOnAction(e -> {
+                    Thread t = new Thread(() -> {
+                            Platform.runLater(() -> {
+                                    
+                                    this.setRoot(root);
+                                }
+                                );
+                    });
+                    t.setDaemon(true);
+                    t.start();
+                });
             
+            options.getItems().addAll(newGame, close);
+            root.getChildren().add(menubar);
             root.setStyle("-fx-background-color: black;");
             
             
