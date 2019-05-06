@@ -25,6 +25,9 @@ public class Board2048 extends Group {
     private Tile[][] board; /** Array that holds all the Tiles in the game */
     private boolean emptyMove; /** Used to check if a move is "empty" */
     private int score; /** value all of tiles on the board */
+    private Text highScore;
+    private boolean winner = false;
+    private int count;
 
     /**
      * Default constructor that is used to create a new game of 2048. Each
@@ -41,6 +44,7 @@ public class Board2048 extends Group {
 		this.getChildren().add(board[row][col]);
 	    }//for - goes through columns
 	}//for - goes through rows
+	highScore = new Text(540, 30, "0");
 	this.randTile();
 	this.randTile();
 	this.setOnKeyPressed(this.createKeyEvent());
@@ -149,11 +153,17 @@ public class Board2048 extends Group {
 	    System.out.println("moved");
 	    emptyMove = false;
 	}else if(!board[x1][y1].isEmpty() && !board[x2][y2].isEmpty() &&
-		 board[x1][y1].getNum() == board[x2][y2].getNum()) {
+		 board[x1][y1].getNum() == board[x2][y2].getNum() &&
+		 board[x1][y1].getNum() < 2048) {
 	    board[x2][y2].setNum(board[x2][y2].getNum() +
 				 board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
+	    if(board[x2][y2].getNum() == 2048) {
+		winner = true;
+		promptWin();
+	    }
 	    score += board[x2][y2].getNum();
+	    count--;
 	    System.out.println("joined");
 	    emptyMove = false;
 	}
@@ -184,6 +194,7 @@ public class Board2048 extends Group {
 	    y = (int)(4 * Math.random());
 	}while(!board[x][y].isEmpty());
 	board[x][y].setNum(rand);
+	count++;
     }//randTile
 
     /**
@@ -203,6 +214,16 @@ public class Board2048 extends Group {
 	}//if - a successful move is done (not empty)
 	return true;
     }//checkEmptyMove
+
+    private void promptWin() {
+	//stuff here
+    }
+
+    private void checkLose() {
+	if(count == 16) {
+	    //stuff here
+	}
+    }
 
     /**
      * A subclass used directly for {@code Board2048}. A tile is really only
