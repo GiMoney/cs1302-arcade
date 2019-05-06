@@ -81,12 +81,8 @@ public class Board2048 extends Group {
 	for(int row = 0; row < board.length; row++) {
 	    for(int col = 1; col < board[row].length; col++) {
 		for(int i = col; i > 0; i--) {
-		    if(stackMove == false) {
-			stackedMove = true;
-			this.move(row, i, row, i - 1);
-		    }
+		    this.move(row, i, row, i - 1);
 		}
-		stackedMove = false;
 	    }
 	}//for
 	this.spawn();
@@ -157,6 +153,7 @@ public class Board2048 extends Group {
 	    board[x2][y2].setNum(board[x2][y2].getNum() +
 				 board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
+	    score += board[x2][y2].getNum();
 	    System.out.println("joined");
 	    emptyMove = false;
 	}
