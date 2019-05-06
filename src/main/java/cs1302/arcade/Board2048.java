@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 public class Board2048 extends Group {
     private Tile[][] board; /** Array that holds all the Tiles in the game */
     private boolean emptyMove; /** Used to check if a move is "empty" */
+    private int score; /** value all of tiles on the board */
 
     /**
      * Default constructor that is used to create a new game of 2048. Each
@@ -32,6 +33,7 @@ public class Board2048 extends Group {
      */
     public Board2048() {
 	super();
+	score = 0;
 	board = new Tile[4][4];
 	for(int row = 0; row < board.length; row++) {
 	    for(int col = 0; col < board[row].length; col++) {
@@ -79,8 +81,12 @@ public class Board2048 extends Group {
 	for(int row = 0; row < board.length; row++) {
 	    for(int col = 1; col < board[row].length; col++) {
 		for(int i = col; i > 0; i--) {
-		    this.move(row, i, row, i - 1);
+		    if(stackMove == false) {
+			stackedMove = true;
+			this.move(row, i, row, i - 1);
+		    }
 		}
+		stackedMove = false;
 	    }
 	}//for
 	this.spawn();

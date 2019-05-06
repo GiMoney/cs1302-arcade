@@ -30,7 +30,15 @@ public class Arcade2048 extends Scene {
 		t.setDaemon(true);
 		t.start();
 	    });
-	options.getItems().add(close);
+	MenuItem newGame = new MenuItem("New Game");
+	newGame.setOnAction(e -> {
+		Thread t = new Thread(() -> {
+			Platform.runLater(() -> board = new Board2048());
+		});
+		t.setDaemon(true);
+		t.start();
+	    });
+	options.getItems().addAll(newGame, close);
 	vbox.getChildren().addAll(menubar, board);
     }
 
