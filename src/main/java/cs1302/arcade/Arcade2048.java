@@ -33,7 +33,7 @@ public class Arcade2048 extends Scene {
 	MenuItem newGame = new MenuItem("New Game");
 	newGame.setOnAction(e -> {
 		Thread t = new Thread(() -> {
-			Platform.runLater(() -> board = new Board2048());
+			Platform.runLater(() -> board.newGame());
 		});
 		t.setDaemon(true);
 		t.start();

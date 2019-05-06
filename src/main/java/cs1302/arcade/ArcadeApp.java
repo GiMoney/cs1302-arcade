@@ -18,6 +18,8 @@ import javafx.scene.layout.HBox;
 public class ArcadeApp extends Application {
 
     HBox hbox = new HBox();
+    Arcade2048 scene2048;
+    ArcadeSpaceInvaders sceneSpace;
 
     Group group = new Group();           // main container
     Random rng = new Random();           // random number generator
@@ -65,10 +67,9 @@ public class ArcadeApp extends Application {
         hbox.getChildren().addAll(play2048, playSpace);
         Scene sceneArcade = new Scene(hbox, 640, 480);
 
-        Board2048 group = new Board2048();
-        Arcade2048 scene2048 = new Arcade2048(new Board2048(), sceneArcade);
         play2048.setOnAction(e -> {
                 Thread t = new Thread(() -> {
+			scene2048 = new Arcade2048(new Board2048(), sceneArcade);
                         Platform.runLater(() -> stage.setScene(scene2048));
                         Platform.runLater(() -> stage.setTitle("2048!"));
                         Platform.runLater(() -> stage.sizeToScene());
@@ -79,12 +80,12 @@ public class ArcadeApp extends Application {
             });
 
         
-        ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders(sceneArcade);
         playSpace.setOnAction(e -> {
                 Thread t = new Thread(() -> {
-                        Platform.runLater(()-> stage.setScene(sceneSpace));
+			sceneSpace = new ArcadeSpaceInvaders(sceneArcade);
+                        Platform.runLater(() -> stage.setScene(sceneSpace));
                         Platform.runLater(() -> stage.setTitle("Space Invaders!"));
-                        Platform.runLater(()->stage.sizeToScene());
+                        Platform.runLater(() ->stage.sizeToScene());
                 });
                 t.setDaemon(true);
                 t.start();

@@ -25,7 +25,7 @@ public class Board2048 extends Group {
     private Tile[][] board; /** Array that holds all the Tiles in the game */
     private boolean emptyMove; /** Used to check if a move is "empty" */
     private int score; /** value all of tiles on the board */
-    private Text highScore;
+    private Text textScore;
     private boolean winner = false;
     private int count;
 
@@ -44,11 +44,22 @@ public class Board2048 extends Group {
 		this.getChildren().add(board[row][col]);
 	    }//for - goes through columns
 	}//for - goes through rows
-	highScore = new Text(540, 30, "0");
+	textScore = new Text(540, 30, "" + score);
 	this.randTile();
 	this.randTile();
 	this.setOnKeyPressed(this.createKeyEvent());
     }//board constructor
+
+    public void newGame() {
+	score = 0;
+	for(int row = 0; row < board.length; row++) {
+	    for(int col = 0; col < board[row].length; col++) {
+		board[row][col].setNum(0);
+	    }
+	}
+	this.randTile();
+	this.randTile();
+    }//newGame
 
     /**
      * A helper method that is used to create an {@code Event} used for
@@ -246,6 +257,8 @@ public class Board2048 extends Group {
 	    super((x * 100) + (x * 10), (y * 100) + (y * 10), 100, 100);
 	    number = 0;
 	    this.setFill(Color.GRAY);
+	    this.setArcHeight(20);
+	    this.setArcWidth(20);
 	}//empty Tile constructor
 
 	/**

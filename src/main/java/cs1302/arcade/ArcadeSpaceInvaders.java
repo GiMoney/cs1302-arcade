@@ -96,20 +96,8 @@ public class ArcadeSpaceInvaders extends Scene{
                     t.setDaemon(true);
                     t.start();
          });
-            MenuItem newGame = new MenuItem("New Game");
-            newGame.setOnAction(e -> {
-                    Thread t = new Thread(() -> {
-                            Platform.runLater(() -> {
-                                    
-                                    this.setRoot(root);
-                                }
-                                );
-                    });
-                    t.setDaemon(true);
-                    t.start();
-                });
             
-            options.getItems().addAll(newGame, close);
+            options.getItems().addAll(close);
             root.getChildren().add(menubar);
             root.setStyle("-fx-background-color: black;");
             
