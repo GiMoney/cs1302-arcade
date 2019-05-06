@@ -81,10 +81,10 @@ public class ArcadeApp extends Application {
 	
 	ArcadeSpaceInvaders sceneSpace = new ArcadeSpaceInvaders();
 	playSpace.setOnAction(e -> {
-		Thread t = new Thread(() -> {
-			stage.setScene(sceneSpace);
-			stage.setTitle("Space Invaders!");
-			stage.sizeToScene();
+            Thread t = new Thread(() -> {
+                    Platform.runLater(()-> stage.setScene(sceneSpace));
+                    Platform.runLater(() -> stage.setTitle("Space Invaders!"));
+                    Platform.runLater(()->stage.sizeToScene());
 		});
 		t.setDaemon(true);
 		t.start();

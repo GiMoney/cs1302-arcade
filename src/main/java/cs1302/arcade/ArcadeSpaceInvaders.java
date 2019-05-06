@@ -1,7 +1,5 @@
 package cs1302.arcade;
 
-
-
 import java.util.ArrayList;
 import java.util.List; 
 import javafx.animation.Animation;
@@ -62,7 +60,7 @@ public class ArcadeSpaceInvaders extends Scene{
     Text points; // the points
     Text rounds;
     int numPoints,hit = 0; // the number of points
-    int numLives = 2; // the number of lives
+    int numLives = 1; // the number of lives
     int highscore =numPoints;
     boolean moveleft;
     boolean movedown,playerhit =false;
@@ -72,6 +70,7 @@ public class ArcadeSpaceInvaders extends Scene{
     double enemyspeed = 2.0;
     boolean game = true;
     Timeline timeline;
+    
 /**
  *This creates my stage that holds all the magic  
  */
@@ -86,7 +85,7 @@ public class ArcadeSpaceInvaders extends Scene{
             
             
             //life and points       
-            lives = new Text("Lives: 2");
+            lives = new Text("Lives: 1");
             lives.setLayoutX(20);
             lives.setLayoutY(30);
             lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
@@ -132,7 +131,7 @@ public class ArcadeSpaceInvaders extends Scene{
             }
     
             */
-    
+            
             timer = new AnimationTimer() {
                     @Override
                     public void handle(long arg0) {
@@ -149,9 +148,7 @@ public class ArcadeSpaceInvaders extends Scene{
             timeline.play();
         
             //moving player
-            this.setOnKeyPressed(e->{
-                     
-                     
+            this.setOnKeyPressed(e->{                     
                     if(e.getCode() == KeyCode.RIGHT) {
                         if(player.getLayoutX() >= 540){
                             player.setLayoutX(player.getLayoutX());
@@ -522,8 +519,8 @@ public class ArcadeSpaceInvaders extends Scene{
             timeline.play();
             highscore = numPoints;
             points.setText("Points: " + String.valueOf(numPoints));                
-            rounds.setText("Round: "+ String.valueOf(round));
-
+            rounds.setText("Wave: "+ String.valueOf(round));
+            
         }
     }
 
