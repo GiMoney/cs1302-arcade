@@ -14,14 +14,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 
 public class ArcadeApp extends Application {
 
     HBox hbox = new HBox();
+    Group group = new Group();
+    
     Arcade2048 scene2048;
     ArcadeSpaceInvaders sceneSpace;
 
-    Group group = new Group();           // main container
     Random rng = new Random();           // random number generator
     Rectangle r = new Rectangle(20, 20); // some rectangle
 
@@ -62,10 +65,23 @@ public class ArcadeApp extends Application {
          * simple sample code for mouse and keyboard interactions with a node
          * (rectangle) in a group.
          */
+	Rectangle box = new Rectangle(10, 10, 500, 200);
+	box.setFill(Color.BLACK);
+	Text gi = new Text(150, 150, "Gi");
+	gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+	gi.setFill(Color.YELLOWGREEN);
+	Text le = new Text(170, 150, "Le");
+	le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+	le.setFill(Color.DEEPPINK);
         Button play2048 = new Button("Play 2048!");
+	play2048.setLayoutX(100);
+	play2048.setLayoutY(300);
         Button playSpace = new Button("Play Space Invaders!");
-        hbox.getChildren().addAll(play2048, playSpace);
-        Scene sceneArcade = new Scene(hbox, 640, 480);
+	playSpace.setLayoutX(300);
+	playSpace.setLayoutY(300);
+        //hbox.getChildren().addAll(play2048, playSpace);
+	group.getChildren().addAll(box, gi, le, play2048, playSpace);
+        Scene sceneArcade = new Scene(group, 1000, 1000);
 
         play2048.setOnAction(e -> {
                 Thread t = new Thread(() -> {
