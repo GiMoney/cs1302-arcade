@@ -93,7 +93,7 @@ public class ArcadeSpaceInvaders extends Scene{
                     });
                     t.setDaemon(true);
                     t.start();
-         });
+                });
             options.getItems().addAll(close);
             root.getChildren().add(menubar);
             root.setStyle("-fx-background-color: black;");
@@ -108,78 +108,78 @@ public class ArcadeSpaceInvaders extends Scene{
      *This method controls what each key does
      */
     public void press(){
-         this.setOnKeyPressed(e->{
-                 if(e.getCode() == KeyCode.RIGHT) { // if right is pressed
-                     if(player.getLayoutX() >= 600){ 
-                             player.setLayoutX(player.getLayoutX());
-                     }  // makes it move to the right
-                         else{
-                             player.setLayoutX(player.getLayoutX() + 25);
-                         }
-                     }
-                 if(e.getCode() == KeyCode.LEFT) {//if left is pressed
-                         if(player.getLayoutX() <= 0){
-                             player.setLayoutX(player.getLayoutX());
-                         } // makes it move to the left
-                         else{
-                             player.setLayoutX(player.getLayoutX() - 25);
-                         }
-                     }
-                 if((e.getCode() == KeyCode.SPACE )){ // if space is pressed
-                         shoot();
-                         shoot1(); // both the enemy and the player will shoot
-                         for(int i = pressed; i < mag.size();i++){
-                             root.getChildren().add(mag.get(i));
-                             update(mag.get(i)); // adds rounds to the magazine
-                             try{
-                                 if(mag1.get(i) ==null){
-                                 }
-                                 else{
-                                     root.getChildren().add(mag1.get(i));
-                                 }
-                                 if(dotR1 !=null){
-                                     update1(mag1.get(i)); // adds rounds the the mag
-                                 }
-                             }
-                             catch(Exception o){
-                             }
-                             pressed++;
-                         }
-                     }
-             });
+        this.setOnKeyPressed(e->{
+                if(e.getCode() == KeyCode.RIGHT) { // if right is pressed
+                    if(player.getLayoutX() >= 600){ 
+                        player.setLayoutX(player.getLayoutX());
+                    }  // makes it move to the right
+                    else{
+                        player.setLayoutX(player.getLayoutX() + 25);
+                    }
+                }
+                if(e.getCode() == KeyCode.LEFT) {//if left is pressed
+                    if(player.getLayoutX() <= 0){
+                        player.setLayoutX(player.getLayoutX());
+                    } // makes it move to the left
+                    else{
+                        player.setLayoutX(player.getLayoutX() - 25);
+                    }
+                }
+                if((e.getCode() == KeyCode.SPACE )){ // if space is pressed
+                    shoot();
+                    shoot1(); // both the enemy and the player will shoot
+                    for(int i = pressed; i < mag.size();i++){
+                        root.getChildren().add(mag.get(i));
+                        update(mag.get(i)); // adds rounds to the magazine
+                        try{
+                            if(mag1.get(i) ==null){
+                            }
+                            else{
+                                root.getChildren().add(mag1.get(i));
+                            }
+                            if(dotR1 !=null){
+                                update1(mag1.get(i)); // adds rounds the the mag
+                            }
+                        }
+                        catch(Exception o){
+                        }
+                        pressed++;
+                    }
+                }
+            });
     }
     /**
      *This helper method creates the monsters
      */
     public void create(){
         for(int i =0;i < 8;i++){
-                 for(int j = 0;j<6;j++){
-                     if(i>=6){
-                         monsters[i][j] = new Monster(i,j); // buffer monsters
-                         monsters[i][j].setDisable(true);
-                     }
-                     else{
-                         monsters[i][j] = new Monster(i,j); // regular monsters
-                         root.getChildren().add(monsters[i][j]);
-                     }
-                 }
+            for(int j = 0;j<6;j++){
+                if(i>=6){
+                    monsters[i][j] = new Monster(i,j); // buffer monsters
+                    monsters[i][j].setDisable(true);
+                }
+                else{
+                    monsters[i][j] = new Monster(i,j); // regular monsters
+                    root.getChildren().add(monsters[i][j]);
+                }
+            }
 
-             }
+        }
 
         timer = new AnimationTimer() { // animation timer for bullets
-                     @Override
-                     public void handle(long arg0) {
-                         gameUpdate();
-                     }
-                 };
-             timer.start();
+                @Override
+                public void handle(long arg0) {
+                    gameUpdate();
+                }
+            };
+        timer.start();
 
-             //timeline for making monsters shoots every few seconds
+        //timeline for making monsters shoots every few seconds
 
-             timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-             }));
-             timeline.setCycleCount(Animation.INDEFINITE);
-             timeline.play();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
 
     }
@@ -282,16 +282,16 @@ public class ArcadeSpaceInvaders extends Scene{
             dotR1 = new Rectangle(monsters[num][num].getX(),monsters[num][num].getY(),4,10);
             if(monsters[num][num].getX() >=700) {
                 moveleft = true; // if the monster is too far to the right
-                 System.out.println("1");
-             }
-             if(monsters[num][num].getX() <= 0){
-                 moveleft= false;//if the monster is too far to the left
-                 System.out.println("A");
-             }
-             dotR1.setStroke(Color.RED); // sets the bullets color to red
-             dotR1.setFill(Color.RED);
-             hit1(dotR1); // checks if hit
-             mag1.add(dotR1); // adds the bullet
+                System.out.println("1");
+            }
+            if(monsters[num][num].getX() <= 0){
+                moveleft= false;//if the monster is too far to the left
+                System.out.println("A");
+            }
+            dotR1.setStroke(Color.RED); // sets the bullets color to red
+            dotR1.setFill(Color.RED);
+            hit1(dotR1); // checks if hit
+            mag1.add(dotR1); // adds the bullet
         }
     }
     /**
@@ -384,19 +384,19 @@ public class ArcadeSpaceInvaders extends Scene{
      *This method will move the 2D array of monsters
      @param monsters Monster[][]
      @throws NullPointerException
-     */
+    */
     public void monstersMove(Monster[][] monsters) throws NullPointerException{
         if(killed ==0){ // if havent kiled yet
             for (Monster[] u: monsters) {
-                 Arrays.stream(u)
-                  .filter(val -> val != null)
-                     .toArray(); // filters out all of the null monsters
-                   for (Monster mon: u) {
+                Arrays.stream(u)
+                    .filter(val -> val != null)
+                    .toArray(); // filters out all of the null monsters
+                for (Monster mon: u) {
                     if(mon == null){
                     }
-                     else if(mon.getX() >=750){
-                         moveleft=true;
-                     }//move to the left
+                    else if(mon.getX() >=750){
+                        moveleft=true;
+                    }//move to the left
                     else if(mon.getX() <=0){
                         moveleft=false;
                     }//move to the right
@@ -405,9 +405,9 @@ public class ArcadeSpaceInvaders extends Scene{
                     if ((!moveleft) && mon !=null){            
                         mon.moveRight();
                     }//move to the right
-                     if ((moveleft) && mon!=null){
-                         mon.moveLeft();
-                     }//move to the left
+                    if ((moveleft) && mon!=null){
+                        mon.moveLeft();
+                    }//move to the left
                 }
             }
         }
@@ -419,7 +419,7 @@ public class ArcadeSpaceInvaders extends Scene{
      *This helper method will move the monsters even after some of them have died
      @param monsters Monster[][]
      @throws NullPointerException
-     */
+    */
     public void killedMove(Monster[][] monsters) throws NullPointerException{
         for(int i =0;i<8;i++){
             for(int j= 0;j<6;j++){
@@ -430,7 +430,7 @@ public class ArcadeSpaceInvaders extends Scene{
                 }//move to the left
                 else if(monsters[i][j].getX() <=0){
                     moveleft=false;
-                    }//move to the right
+                }//move to the right
                 if(monsters[i][j]==null){
                 }
                 if ((!moveleft) && monsters[i][j]!=null){
@@ -554,14 +554,14 @@ public class ArcadeSpaceInvaders extends Scene{
         }
 
         /**
-          *This method moves the monster to the left
-          */
+         *This method moves the monster to the left
+         */
         void moveRight(){
-             if(getX() == 800){
-                 moveleft = true; // if it reaches to far, moves to the left
-             }
-             movedown = false; 
-             setX(getX()+enemyspeed);//moves the right faster and faster each round
+            if(getX() == 800){
+                moveleft = true; // if it reaches to far, moves to the left
+            }
+            movedown = false; 
+            setX(getX()+enemyspeed);//moves the right faster and faster each round
         }
     }
 }
