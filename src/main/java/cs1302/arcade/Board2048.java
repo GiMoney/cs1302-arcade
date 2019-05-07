@@ -3,13 +3,17 @@ package cs1302.arcade;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * This a class that is used to create a board representative of the
@@ -26,8 +30,9 @@ public class Board2048 extends Group {
     private boolean emptyMove; /** Used to check if a move is "empty" */
     private int score; /** value all of tiles on the board */
     private Text textScore;
-    private boolean winner = false;
-    private int count;
+    private Rectangle scoreBox;
+    private Alert loseAlert;
+    private Alert winAlert;
 
     /**
      * Default constructor that is used to create a new game of 2048. Each
@@ -44,10 +49,24 @@ public class Board2048 extends Group {
 		this.getChildren().add(board[row][col]);
 	    }//for - goes through columns
 	}//for - goes through rows
-	textScore = new Text(540, 30, "" + score);
+	Text current = new Text(450, 30, "Current Score:");
+	current.setFill(Color.WHITE);
+	current.setFont(new Font(18));
+	textScore = new Text(450, 90, "" + score);
+	textScore.setFill(Color.WHITE);
+	textScore.setFont(new Font(50));
+	textScore.setTextAlignment(TextAlignment.CENTER);
+	scoreBox = new Rectangle(440, 0, 150, 100);
+	scoreBox.setFill(Color.GRAY);
+	scoreBox.setArcWidth(20);
+	scoreBox.setArcHeight(20);
+	this.getChildren().addAll(scoreBox, current, textScore);
 	this.randTile();
 	this.randTile();
 	this.setOnKeyPressed(this.createKeyEvent());
+	Platform.runLater(() -> loseAlert = new Alert(AlertType.INFORMATION, "You lose!"));
+	Platform.runLater(() -> winAlert = new Alert(AlertType.INFORMATION, "You win! You can continue" +
+						     " playing to see how high of score you can get!"));
     }//board constructor
 
     public void newGame() {
@@ -170,11 +189,10 @@ public class Board2048 extends Group {
 				 board[x1][y1].getNum());
 	    board[x1][y1].setNum(0);
 	    if(board[x2][y2].getNum() == 2048) {
-		winner = true;
-		promptWin();
+		Platform.runLater(() -> winAlert.showAndWait());
 	    }
 	    score += board[x2][y2].getNum();
-	    count--;
+	    textScore.setText("" + score);
 	    System.out.println("joined");
 	    emptyMove = false;
 	}
@@ -186,6 +204,7 @@ public class Board2048 extends Group {
     public void spawn() {
 	if(!checkEmptyMove()) {
 	    this.randTile();
+	    this.checkLose();
 	}else {
 	    System.out.println("empty move");
 	}
@@ -205,7 +224,6 @@ public class Board2048 extends Group {
 	    y = (int)(4 * Math.random());
 	}while(!board[x][y].isEmpty());
 	board[x][y].setNum(rand);
-	count++;
     }//randTile
 
     /**
@@ -226,15 +244,39 @@ public class Board2048 extends Group {
 	return true;
     }//checkEmptyMove
 
-    private void promptWin() {
-	//stuff here
-    }
-
     private void checkLose() {
-	if(count == 16) {
-	    //stuff here
+	boolean fullBoard = true;
+	for(int r = 0; r < board.length; r++) {
+	    for(int c = 0; c < board[r].length; c++) {
+		if(board[r][c].getNum() == 0) {
+		    fullBoard = false;
+		}
+	    }
+	}
+	if(fullBoard){
+	    if(!this.checkPossible()) {
+		Platform.runLater(() -> loseAlert.showAndWait());
+	    }
 	}
     }
+
+    private boolean checkPossible() {
+	for(int r = 0; r < board.length; r++) {
+	    for(int c = 0; c < board[r].length - 1; c++) {
+		if(board[r][c].getNum() == board[r][c+1].getNum()) {
+		    return true;
+		}
+	    }
+	}
+	for(int c = 0; c < board[0].length; c++) {
+	    for(int r = 0; r < board.length - 1; r++) {
+		if(board[r][c].getNum() == board[r+1][c].getNum()) {
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }//checkPossible
 
     /**
      * A subclass used directly for {@code Board2048}. A tile is really only

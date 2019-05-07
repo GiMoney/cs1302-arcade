@@ -15,7 +15,7 @@ public class Arcade2048 extends Scene {
     private Board2048 board;
     
     public Arcade2048(Board2048 g, Scene main) {
-	super(g, 500, 500);
+	super(g, 600, 470);
 	this.setRoot(vbox);
 	board = g;
 	menubar = new MenuBar();
