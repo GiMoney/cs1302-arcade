@@ -4,18 +4,22 @@ import java.util.Random;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
+import javafx.util.Duration;
 
 public class ArcadeApp extends Application {
 
@@ -65,23 +69,36 @@ public class ArcadeApp extends Application {
          * simple sample code for mouse and keyboard interactions with a node
          * (rectangle) in a group.
          */
-	Rectangle box = new Rectangle(10, 10, 500, 200);
-	box.setFill(Color.BLACK);
-	Text gi = new Text(150, 150, "Gi");
-	gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-	gi.setFill(Color.YELLOWGREEN);
-	Text le = new Text(170, 150, "Le");
-	le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-	le.setFill(Color.DEEPPINK);
+	Rectangle box = new Rectangle(50, -280, 400, 200);
+	box.setFill(Color.DARKBLUE);
+	Text gi = new Text(-180, 150, "Gi");
+	gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+	gi.setFill(Color.WHITE);
+	gi.setStroke(Color.BLACK);
+	gi.setStrokeWidth(5);
+	Text le = new Text(540, 150, "Le");
+	le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+	le.setFill(Color.RED);
+	le.setStroke(Color.WHITE);
+	le.setStrokeWidth(5);
         Button play2048 = new Button("Play 2048!");
 	play2048.setLayoutX(100);
 	play2048.setLayoutY(300);
         Button playSpace = new Button("Play Space Invaders!");
-	playSpace.setLayoutX(300);
+	playSpace.setLayoutX(250);
 	playSpace.setLayoutY(300);
-        //hbox.getChildren().addAll(play2048, playSpace);
 	group.getChildren().addAll(box, gi, le, play2048, playSpace);
-        Scene sceneArcade = new Scene(group, 1000, 1000);
+	EventHandler<ActionEvent> handler = e -> {
+	    box.setY(box.getY() + 6); //go to 20
+	    gi.setX(gi.getX() + 6); //go to 120
+	    le.setX(le.getX() - 6); //go to 240
+	};
+	KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.05), handler);
+	Timeline timeline = new Timeline();
+	timeline.setCycleCount(50);
+	timeline.getKeyFrames().add(keyFrame);
+        Scene sceneArcade = new Scene(group, 500, 400);
+	sceneArcade.setFill(Color.GRAY);
 
         play2048.setOnAction(e -> {
                 Thread t = new Thread(() -> {
@@ -111,6 +128,8 @@ public class ArcadeApp extends Application {
         stage.setScene(sceneArcade);
         stage.sizeToScene();
         stage.show();
+
+	timeline.play();
         
         // the group must request input focus to receive key events
         // @see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html#requestFocus--
