@@ -50,7 +50,7 @@ public class ArcadeSpaceInvaders extends Scene{
     AnimationTimer timer; // animationt imer
     Pane root = new Pane(); // makes a pane
     // List<ImageView> monsters = new ArrayList<ImageView>();
-    Monster[][]  monsters = new Monster[6][6];
+    Monster[][]  monsters = new Monster[7][6];
 //     Hitbox[][] hitbox = new Hitbox[6][6];
     ImageView player; // player
     Rectangle dotR = new Rectangle(); // for the pew pew
@@ -64,7 +64,7 @@ public class ArcadeSpaceInvaders extends Scene{
     Text points; // the points
     Text rounds;
     int numPoints,hit = 0; // the number of points
-    int numLives = 2; // the number of lives
+    int numLives = 10000; // the number of lives
     int highscore =numPoints;
     boolean moveleft;
     boolean movedown,playerhit =false;
@@ -123,17 +123,17 @@ public class ArcadeSpaceInvaders extends Scene{
             player = player();
   
             root.getChildren().add(player);
-            for(int i =0;i < 6;i++){
+            for(int i =0;i < 7;i++){
                 for(int j = 0;j<6;j++){
-                    /*if(i==6){
+                    if(i==6){
                         monsters[i][j] = new Monster(i,j);
                         monsters[i][j].setDisable(true);
-                        //  root.getChildren().add(monsters[i][j]);
+                        //root.getChildren().add(monsters[i][j]);
                     }
-                    else{*/
+                    else{
                     monsters[i][j] = new Monster(i,j);
                     root.getChildren().add(monsters[i][j]);
-                    // }
+                    }
             }
         
             }
@@ -230,7 +230,7 @@ public class ArcadeSpaceInvaders extends Scene{
         boolean visible = true;
         double speed = 7.0;
         double y = dotR.getY();
-        y = y - speed;
+        y = y - (speed +enemyspeed);
         dotR.setY(y);
         if(y <100){
             visible =false;
@@ -308,9 +308,9 @@ public class ArcadeSpaceInvaders extends Scene{
           
           
           
-            if(monsters[num][num].getX() >=560){
-                moveleft = true;
-            }
+            // if(monsters[num][num].getX() >=560){
+            //  moveleft = true;
+            // }
             if(monsters[num][num].getX() <= 0){
                 moveleft= false;
             }
@@ -335,7 +335,7 @@ public class ArcadeSpaceInvaders extends Scene{
             }else{
                 double speed1 = 3.0;
                 double y1 = dotR1.getY();
-                y1 = y1 + speed1;
+                y1 = y1 + speed1+enemyspeed;
                 dotR1.setY(y1);
                 dotR1.setX(dotR1.getX());
                 hit1(dotR1);
@@ -359,9 +359,9 @@ public class ArcadeSpaceInvaders extends Scene{
                     }
                 
                     else if( !player.isDisable() && ((dotR1.getX() > player.getLayoutX())
-                              && ((dotR1.getX() < player.getLayoutX()+50))
+                              && ((dotR1.getX() < player.getLayoutX()+25))
                               && ((dotR1.getY() > player.getLayoutY())
-                                  && ((dotR1.getY() < player.getLayoutY()+50 )))))
+                                  && ((dotR1.getY() < player.getLayoutY()+25 )))))
                     {
                     
                         //System.out.println("TRUE1");
@@ -410,6 +410,7 @@ public class ArcadeSpaceInvaders extends Scene{
             update1(mag1.get(i));
             hit1(mag1.get(i));
         }
+
         //is Player win
         isWin();
         //is Player lost
@@ -421,14 +422,16 @@ public class ArcadeSpaceInvaders extends Scene{
     public void monstersMove(Monster[][] monsters) throws NullPointerException{
         if(killed ==0){
             for (Monster[] u: monsters) {
-                Arrays.stream(u)
-                    .filter(val -> val != null)
-                    .toArray();
+                 Arrays.stream(u)
+                  .filter(val -> val != null)
+                  .toArray();
                 for (Monster mon: u) {
-                    if(mon.getX() >=560){
+                    if(mon == null){
+                    }
+                    else if(mon.getX() >=625){
                         moveleft=true;
                     }
-                    if(mon.getX() <=0){
+                    else if(mon.getX() <=0){
                         moveleft=false;
                     }
                     if(mon ==null){
@@ -443,12 +446,12 @@ public class ArcadeSpaceInvaders extends Scene{
             }
         }
         else{
-            for(int i =0;i<6;i++){
+            for(int i =0;i<7;i++){
                 for(int j= 0;j<6;j++){
                     if(monsters[i][j] ==null){
                     }
 
-                    else if(monsters[i][j].getX() >=560){
+                    else if(monsters[i][j].getX() >=625){
                         moveleft=true;
                     }
                     else if(monsters[i][j].getX() <=0){
@@ -475,8 +478,8 @@ public class ArcadeSpaceInvaders extends Scene{
         ImageView i = new ImageView(new Image("space/Spaceship-PNG-File.png"));
         i.setLayoutX(225);
         i.setLayoutY(450);
-        i.setFitHeight(50);
-        i.setFitWidth(50);
+        i.setFitHeight(25);
+        i.setFitWidth(25);
         return i;
     }
 
@@ -509,11 +512,15 @@ public class ArcadeSpaceInvaders extends Scene{
                 r1= null;
                 root.getChildren().remove(r1);
             }
-            for(int i =0;i < 6;i++){
+            for(int i =0;i < 7;i++){
                 for(int j = 0;j<6;j++){
+                    if(i !=6){
                     root.getChildren().remove(monsters[i][j]);
                     monsters[i][j] = new Monster(i,j);
+                    
                     root.getChildren().add(monsters[i][j]);
+                    }
+                   
                 }  
             }
             root.getChildren().add(player);
@@ -527,7 +534,7 @@ public class ArcadeSpaceInvaders extends Scene{
             highscore = numPoints;
             points.setText("Points: " + String.valueOf(numPoints));                
             rounds.setText("Wave: "+ String.valueOf(round));
-            enemyspeed=enemyspeed+2;
+            enemyspeed=enemyspeed +.5;
         }
     }
 
@@ -575,16 +582,14 @@ public class ArcadeSpaceInvaders extends Scene{
         }
          
         void moveRight(){
-            if(getX() == 560){
+            if(getX() == 625-enemyspeed){
                 moveleft = true;
                  
             }
             movedown = false;
             setX(getX()+enemyspeed);
         }
-        void moveDown(){
-            setLayoutY(getLayoutY() +10);
-        }
+      
     }
      
     /*class Bullet extends Rectangle{
