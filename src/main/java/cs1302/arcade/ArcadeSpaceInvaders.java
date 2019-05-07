@@ -170,6 +170,9 @@ public class ArcadeSpaceInvaders extends Scene{
         }
 
         timer = new AnimationTimer() { // animation timer for bullets
+                /**
+                 *This handles my animation timer
+                 */
                 @Override
                 public void handle(long arg0) {
                     gameUpdate();
