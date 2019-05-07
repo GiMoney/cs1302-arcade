@@ -5,6 +5,17 @@ for this project. Please keep this document organized using Markdown. If you
 click on this file in your team's GitHub repository website, then you will see
 that the Markdown is transformed into nice looking HTML.
 
+## TUE 2019-05-07 @ 3:00 PM EST
+
+ 1. **DONE:** We finished up all the finishing touches to our games. For 2048, we completed the score
+    fuctionality of the game and fixed some bugs that happend. With Space Invaders, we finished up the visual
+    style of it and some bugs that included invincibility lasting too long the aliens not moving around correctly.
+    We also completed the extra credit for the animated intro for our main arcade app.
+
+ 2. **PROB:** We attempted to do the high score table for the game but we could figure out how to read our
+    files. In 2048, we had some trouble with threads not working correctly with the EventDispatch thread. As mentioned
+    above, in Space Invaders there was an issue with invinciblity frames.
+
 ## TUE 2019-04-30 @ 10:30 PM EST
 
  1. **DONE:** We have gotten a lot of work done and just need to do more in Space Invaders
