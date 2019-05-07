@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Duration;
-
+import javafx.scene.layout.StackPane;
 public class ArcadeApp extends Application {
 
     HBox hbox = new HBox();
@@ -31,6 +31,7 @@ public class ArcadeApp extends Application {
 
     Random rng = new Random();           // random number generator
     Rectangle r = new Rectangle(20, 20); // some rectangle
+    
 
     /**
      * Return a mouse event handler that moves to the rectangle to a random
@@ -63,78 +64,118 @@ public class ArcadeApp extends Application {
     /** {@inheritdoc} */
     @Override
     public void start(Stage stage) {
-
-        /* You are allowed to rewrite this start method, add other methods,
-         * files, classes, etc., as needed. This currently contains some
-         * simple sample code for mouse and keyboard interactions with a node
-         * (rectangle) in a group.
-         */
-	Rectangle box = new Rectangle(50, -280, 400, 200);
-	box.setFill(Color.DARKBLUE);
-	Text gi = new Text(-180, 150, "Gi");
-	gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
-	gi.setFill(Color.WHITE);
-	gi.setStroke(Color.BLACK);
-	gi.setStrokeWidth(5);
-	Text le = new Text(540, 150, "Le");
-	le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
-	le.setFill(Color.RED);
-	le.setStroke(Color.WHITE);
-	le.setStrokeWidth(5);
+        Rectangle box = new Rectangle(50, -280, 400, 200);
+        box.setFill(Color.DARKBLUE);
+        Text gi = new Text(-180, 150, "Gi");
+        gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+        gi.setFill(Color.WHITE);
+        gi.setStroke(Color.BLACK);
+        gi.setStrokeWidth(5);
+        Text le = new Text(540, 150, "Le");
+        le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+        le.setFill(Color.RED);
+        le.setStroke(Color.WHITE);
+        le.setStrokeWidth(5);
         Button play2048 = new Button("Play 2048!");
-	play2048.setLayoutX(100);
-	play2048.setLayoutY(300);
+        play2048.setLayoutX(100);
+        play2048.setLayoutY(300);
         Button playSpace = new Button("Play Space Invaders!");
-	playSpace.setLayoutX(250);
-	playSpace.setLayoutY(300);
-	group.getChildren().addAll(box, gi, le, play2048, playSpace);
-	EventHandler<ActionEvent> handler = e -> {
-	    box.setY(box.getY() + 6); //go to 20
-	    gi.setX(gi.getX() + 6); //go to 120
-	    le.setX(le.getX() - 6); //go to 240
-	};
-	KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.05), handler);
-	Timeline timeline = new Timeline();
-	timeline.setCycleCount(50);
-	timeline.getKeyFrames().add(keyFrame);
+        playSpace.setLayoutX(250);
+        playSpace.setLayoutY(300);
+        Text text = new Text(-490,15,"Authors: Gi Suen and Kyle Mettile " + 
+                             "| Application Title: cs1302-arcade");
+        group.getChildren().addAll(box, gi, le, play2048, playSpace,text);
+        
+        
+        EventHandler<ActionEvent> handler = e -> {
+            box.setY(box.getY() + 6); //go to 20
+            gi.setX(gi.getX() + 6); //go to 120
+            le.setX(le.getX() - 6); //go to 240
+            text.setX(text.getX()+10);
+        };
+        
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.05), handler);
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(50);
+        timeline.getKeyFrames().add(keyFrame);
+        
+        
         Scene sceneArcade = new Scene(group, 500, 400);
-	sceneArcade.setFill(Color.GRAY);
-
-        play2048.setOnAction(e -> {
-                Thread t = new Thread(() -> {
-			scene2048 = new Arcade2048(new Board2048(), sceneArcade);
-                        Platform.runLater(() -> stage.setScene(scene2048));
-                        Platform.runLater(() -> stage.setTitle("2048!"));
-                        Platform.runLater(() -> stage.sizeToScene());
-                        scene2048.getBoard().requestFocus();
-                });
-                t.setDaemon(true);
-		t.start();
-            });
-
+        sceneArcade.setFill(Color.GRAY);
         
-        playSpace.setOnAction(e -> {
-                Thread t = new Thread(() -> {
-			sceneSpace = new ArcadeSpaceInvaders(sceneArcade);
-                        Platform.runLater(() -> stage.setScene(sceneSpace));
-                        Platform.runLater(() -> stage.setTitle("Space Invaders!"));
-                        Platform.runLater(() ->stage.sizeToScene());
-                });
-                t.setDaemon(true);
+    play2048.setOnAction(e -> {
+            Thread t = new Thread(() -> {
+                    scene2048 = new Arcade2048(new Board2048(), sceneArcade);
+                    Platform.runLater(() -> stage.setScene(scene2048));
+                    Platform.runLater(() -> stage.setTitle("2048!"));
+                    Platform.runLater(() -> stage.sizeToScene());
+                    scene2048.getBoard().requestFocus();
+            });
+            t.setDaemon(true);
                 t.start();
+        });
+    
+    
+    playSpace.setOnAction(e -> {
+            Thread t = new Thread(() -> {
+                    sceneSpace = new ArcadeSpaceInvaders(sceneArcade);
+                    Platform.runLater(() -> stage.setScene(sceneSpace));
+                    Platform.runLater(() -> stage.setTitle("Space Invaders!"));
+                    Platform.runLater(() ->stage.sizeToScene());
             });
-        
-        stage.setTitle("Arcade!");
-        stage.setScene(sceneArcade);
-        stage.sizeToScene();
-        stage.show();
-
+            t.setDaemon(true);
+            t.start();
+        });
+    
+    stage.setTitle("Arcade!");
+    stage.setScene(sceneArcade);
+    stage.sizeToScene();
+    stage.show();
+    
 	timeline.play();
-        
-        // the group must request input focus to receive key events
-        // @see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html#requestFocus--
-        //group.requestFocus();
+    
+    // the group must request input focus to receive key events
+    // @see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html#requestFocus--
+    //group.requestFocus();
 
     } // start
+
+/*    public void animated(Button playSpace,Button play2048,Text gi,Text le,Text text,Rectangle box)
+      box = new Rectangle(50, -280, 400, 200);
+        box.setFill(Color.DARKBLUE);
+        gi = new Text(-180, 150, "Gi");
+        gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+        gi.setFill(Color.WHITE);
+        gi.setStroke(Color.BLACK);
+        gi.setStrokeWidth(5);
+        le = new Text(540, 150, "Le");
+        le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
+        le.setFill(Color.RED);
+        le.setStroke(Color.WHITE);
+        le.setStrokeWidth(5);
+        play2048 = new Button("Play 2048!");
+        play2048.setLayoutX(100);
+        play2048.setLayoutY(300);
+        playSpace = new Button("Play Space Invaders!");
+        playSpace.setLayoutX(250);
+        playSpace.setLayoutY(300);
+        text = new Text(-490,15,"Authors: Gi Suen and Kyle Mettile " +
+                        "| Application Title: cs1302-arcade");
+        group.getChildren().addAll(box, gi, le, play2048, playSpace,text);
+        EventHandler<ActionEvent> handler = e -> {
+          box.setY(box.getY() + 6); //go to 20
+          gi.setX(gi.getX() + 6); //go to 120
+          le.setX(le.getX() - 6); //go to 240
+          text.setX(text.getX()+10);
+          };
+          return handler;
+          
+          KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.05), handler);
+          Timeline timeline = new Timeline();
+          timeline.setCycleCount(50);
+          timeline.getKeyFrames().add(keyFrame);
+        */
+    
+        
 
 } // ArcadeApp

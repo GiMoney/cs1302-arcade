@@ -125,10 +125,16 @@ public class ArcadeSpaceInvaders extends Scene{
             root.getChildren().add(player);
             for(int i =0;i < 6;i++){
                 for(int j = 0;j<6;j++){
-            
+                    /*if(i==6){
+                        monsters[i][j] = new Monster(i,j);
+                        monsters[i][j].setDisable(true);
+                        //  root.getChildren().add(monsters[i][j]);
+                    }
+                    else{*/
                     monsters[i][j] = new Monster(i,j);
                     root.getChildren().add(monsters[i][j]);
-                }
+                    // }
+            }
         
             }
 
@@ -385,29 +391,7 @@ public class ArcadeSpaceInvaders extends Scene{
                         
                     }
                 }
-                /*for(Shell u: shell){
-                if((( dotR1.getX() > u.getX())
-                    && ((dotR1.getX() < u.getX()+50))
-                    && ((dotR1.getY() > u.getY())
-                        && ((dotR1.getY() < u.getY()+50 )))))
-                {
-                    if(hit < 3){
-                    dotR1=null;
-                    root.getChildren().remove(dotR1);
-                    hit++;
-                    }
-                    else{
-                        u=null;
-                        root.getChildren().remove(u);
-                    }
-                }
-                }*/
-                
-                //  if(player.isDisable()){
-                // Thread.sleep(10);
-                     // player.setDisable(false);
-                    // playerhit = false;
-                    // }
+            
             }catch(Exception p){};
         }
     }
@@ -452,7 +436,7 @@ public class ArcadeSpaceInvaders extends Scene{
                     if ((!moveleft) && mon !=null){            
                         mon.moveRight();
                     }
-                    if ((moveleft) && mon!=null){
+                     if ((moveleft) && mon!=null){
                         mon.moveLeft();
                     }
                 }
@@ -477,7 +461,7 @@ public class ArcadeSpaceInvaders extends Scene{
                         monsters[i][j].moveRight();
                     }
                     if ((moveleft) && monsters[i][j] !=null){
-                        monsters[i][j].moveLeft();                  }
+                         monsters[i][j].moveLeft();                  }
                 }
             }
         }
@@ -487,8 +471,8 @@ public class ArcadeSpaceInvaders extends Scene{
      
     public ImageView player() {
         //make sure to change later because image is ugly
-        String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
-        ImageView i = new ImageView(new Image(url));
+        // String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
+        ImageView i = new ImageView(new Image("space/Spaceship-PNG-File.png"));
         i.setLayoutX(225);
         i.setLayoutY(450);
         i.setFitHeight(50);
@@ -498,8 +482,8 @@ public class ArcadeSpaceInvaders extends Scene{
 
     public ImageView monster(double x, double y) {
   
-        String url1 = "http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png";
-        ImageView i = new ImageView(new Image(url1));
+        //String url1 = "http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png";
+        ImageView i = new ImageView(new Image("space/Space-Invaders-PNG-Free-Download.png"));
         i.setLayoutX(x);
         i.setLayoutY(y);
         i.setFitHeight(50);
@@ -543,7 +527,7 @@ public class ArcadeSpaceInvaders extends Scene{
             highscore = numPoints;
             points.setText("Points: " + String.valueOf(numPoints));                
             rounds.setText("Wave: "+ String.valueOf(round));
-            
+            enemyspeed=enemyspeed+2;
         }
     }
 
@@ -566,7 +550,7 @@ public class ArcadeSpaceInvaders extends Scene{
     }
 
     class Monster extends ImageView{
-        Image img = new Image("http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png");
+        Image img = new Image("space/Space-Invaders-PNG-Free-Download.png");
         Rectangle rekt = new Rectangle();
         public Monster(int x,int y){
             super();
@@ -591,7 +575,7 @@ public class ArcadeSpaceInvaders extends Scene{
         }
          
         void moveRight(){
-            if(getX() == 530){
+            if(getX() == 560){
                 moveleft = true;
                  
             }
