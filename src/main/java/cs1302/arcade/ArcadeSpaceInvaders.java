@@ -64,7 +64,7 @@ public class ArcadeSpaceInvaders extends Scene{
     Text points; // the points
     Text rounds;
     int numPoints,hit = 0; // the number of points
-    int numLives = 1; // the number of lives
+    int numLives = 2; // the number of lives
     int highscore =numPoints;
     boolean moveleft;
     boolean movedown,playerhit =false;
@@ -103,7 +103,7 @@ public class ArcadeSpaceInvaders extends Scene{
             
             
             //life and points       
-            lives = new Text("Lives: 1");
+            lives = new Text("Lives: 2");
             lives.setLayoutX(20);
             lives.setLayoutY(30);
             lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
@@ -189,7 +189,7 @@ public class ArcadeSpaceInvaders extends Scene{
                         shoot();
                         shoot1();
                         //dotR = new Rectangle(player.getLayoutX()+20,player.getLayoutY()+5,4,10);
-                        for(int i =pressed; i < mag.size();i++){
+                        for(int i = pressed; i < mag.size();i++){
                             root.getChildren().add(mag.get(i));
                             // if(dotR!=null){
                             update(mag.get(i));
@@ -361,7 +361,8 @@ public class ArcadeSpaceInvaders extends Scene{
                         //System.out.println("TRUE1");
                         playerhit= true;
                         player.setDisable(true);
-                       
+
+                        int temp = numLives;
                         
                         dotR1 = null;
                         root.getChildren().remove(dotR1);
@@ -370,9 +371,13 @@ public class ArcadeSpaceInvaders extends Scene{
                         
                         System.out.println("TRUE1");
                         
-                        numLives--;
+                        //numLives--;
                         if(player.isDisable()){
-                            Thread.sleep(2);
+                            Thread.sleep(1);
+                            
+                            numLives--;
+                            
+                            
                             player.setDisable(false);
                             
                         }
@@ -413,7 +418,7 @@ public class ArcadeSpaceInvaders extends Scene{
     }
 
     public void gameUpdate() {
-       
+        player.setDisable(false);
         monstersMove(monsters);
         for(int i = 0; i < mag.size();i++){
             update(mag.get(i));
@@ -532,7 +537,7 @@ public class ArcadeSpaceInvaders extends Scene{
                 shell[i] = new Shell(i,375);
                 root.getChildren().add(shell[i]);
             }
-            
+            player.setDisable(true);
             timer.start();
             timeline.play();
             highscore = numPoints;
