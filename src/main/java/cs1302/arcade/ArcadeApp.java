@@ -20,7 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Duration;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 public class ArcadeApp extends Application {
 
     HBox hbox = new HBox();
@@ -82,9 +84,13 @@ public class ArcadeApp extends Application {
         Button playSpace = new Button("Play Space Invaders!");
         playSpace.setLayoutX(250);
         playSpace.setLayoutY(300);
+        Button spaceManual = new Button("Instructions for SI!");
+        spaceManual.setLayoutX(250);
+        spaceManual.setLayoutY(335);
+
         Text text = new Text(-490,15,"Authors: Gi Suen and Kyle Mettile " + 
                              "| Application Title: cs1302-arcade");
-        group.getChildren().addAll(box, gi, le, play2048, playSpace,text);
+        group.getChildren().addAll(box, gi, le, play2048, playSpace,text,spaceManual);
         
         
         EventHandler<ActionEvent> handler = e -> {
@@ -126,6 +132,30 @@ public class ArcadeApp extends Application {
             t.setDaemon(true);
             t.start();
         });
+
+    spaceManual.setOnAction(e -> {
+            Thread t = new Thread(() -> {
+                    Platform.runLater(() -> {
+                            Alert a = new Alert(AlertType.INFORMATION);
+                            a.setHeaderText("Instructions/Controls for Space Invaders:\n" +
+                                            "Shoot:Space | " + "Move:Left or Right\n"+
+                                            "You only got two lives=Seikero:Shadows Die Twice"+
+                                            " and invunerable for 1 sec after getting hit \n");
+                            a.setContentText("1.Each round the enemy will move faster \n" +
+                                             "2.You can spam space,but so will the enemy \n" +
+                                             "3.Each round bullets go faster, for both sides \n"+
+                                             "4.Enemy movement will move crazy on higher rounds"+
+                                             ", BUT there is a pattern to it! \n" +
+                                             "5.When you kill the last enemy, Time freezes\n" +
+                                             "and your remaining bullets will hit the next wave\n"+
+                                             "But the same goes for enemy bullets on you \n");
+                            a.show();
+                        });
+                        });
+             t.setDaemon(true);
+             t.start();
+         });
+
     
     stage.setTitle("Arcade!");
     stage.setScene(sceneArcade);
