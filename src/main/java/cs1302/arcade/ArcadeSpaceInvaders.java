@@ -1,5 +1,7 @@
 package cs1302.arcade;
 
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.application.Platform;
 import java.util.ArrayList;
 import java.util.List; 
@@ -38,9 +40,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Menu;
-
-
-
+import java.io.BufferedWriter;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import java.io.FileWriter;
 
 /**
  *This is Arcade game called Space Invaders
@@ -81,10 +84,10 @@ public class ArcadeSpaceInvaders extends Scene{
         if(game){ // plays the game
             this.setRoot(root);
             
-            MenuBar menubar = new MenuBar();
+            MenuBar menubar = new MenuBar();//makes a menubar
             Menu options = new Menu("Options");
             menubar.getMenus().add(options);
-            MenuItem close = new MenuItem("Close");
+            MenuItem close = new MenuItem("Close"); //add closing
             
             close.setOnAction(e -> {
                     Thread t = new Thread(() -> {
@@ -100,8 +103,8 @@ public class ArcadeSpaceInvaders extends Scene{
             text();//makes the texts
             player = player();
             root.getChildren().add(player);
-            create();
-            press();
+            create();//creates the text
+            press();//sets controls
         }
     }
     /**
@@ -346,7 +349,7 @@ public class ArcadeSpaceInvaders extends Scene{
                         root.getChildren().remove(dotR1); // removes bullet
                         player.setLayoutX(275);
                         if(player.isDisable()){
-                            Thread.sleep(1); // stays invincsible for a second
+                            Thread.sleep(2); // stays invincsible for a second
                             numLives--; // decreases lives to 1
                             player.setDisable(false); // no longer invincsible
                         }
@@ -513,16 +516,17 @@ public class ArcadeSpaceInvaders extends Scene{
     public void isLost(){
         if(numLives <=0) { // if they dead
             Text text = new Text();
-            text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 25));
-            text.setX(180);
+            text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 50));
+            text.setX(200);
             text.setY(250);    
             text.setFill(Color.WHITE);
             text.setStrokeWidth(2);
             text.setStroke(Color.RED);        
-            text.setText("YOU LOST" + "\n" + "close the game and play again");
+            text.setText("YOU LOST");
             root.getChildren().add(text);
             timer.stop(); // stops game
             game = false; // your dead gg close 
+         
         }
     }
     /**

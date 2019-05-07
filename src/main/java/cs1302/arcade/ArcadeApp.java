@@ -134,27 +134,8 @@ public class ArcadeApp extends Application {
         });
 
     spaceManual.setOnAction(e -> {
-            Thread t = new Thread(() -> {
-                    Platform.runLater(() -> {
-                            Alert a = new Alert(AlertType.INFORMATION);
-                            a.setHeaderText("Instructions/Controls for Space Invaders:\n" +
-                                            "Shoot:Space | " + "Move:Left or Right\n"+
-                                            "You only got two lives=Seikero:Shadows Die Twice"+
-                                            " and invunerable for 1 sec after getting hit \n");
-                            a.setContentText("1.Each round the enemy will move faster \n" +
-                                             "2.You can spam space,but so will the enemy \n" +
-                                             "3.Each round bullets go faster, for both sides \n"+
-                                             "4.Enemy movement will move crazy on higher rounds"+
-                                             ", BUT there is a pattern to it! \n" +
-                                             "5.When you kill the last enemy, Time freezes\n" +
-                                             "and your remaining bullets will hit the next wave\n"+
-                                             "But the same goes for enemy bullets on you \n");
-                            a.show();
-                        });
-                        });
-             t.setDaemon(true);
-             t.start();
-         });
+            manual();
+        });
 
     
     stage.setTitle("Arcade!");
@@ -169,43 +150,34 @@ public class ArcadeApp extends Application {
     //group.requestFocus();
 
     } // start
+    public void manual(){
+        Thread t = new Thread(() -> {
+                     Platform.runLater(() -> {
+                             Alert a = new Alert(AlertType.INFORMATION);
+                             a.setHeaderText("Instructions/Controls for Space Invaders:\n" +
+                                             "Shoot:Space | " + "Move:Left or Right\n"+
+                                             "You only got two lives=Sekiro:Shadows Die Twice"+
+                                             " and invunerable for a sec and \n" +
+                                             "you get teleported to the center if you get hit");
+                             a.setContentText("1.Each round the enemy will move faster \n" +
+                                              "2.You can spam shoot,but so will the enemy \n" +
+                                              "3.Each round bullets go faster, for both sides \n"+
+                                              "4.Enemy movement will move crazy on higher rounds"+
+                                              ", BUT there is a pattern to it! \n" +
+                                              "5.When you kill the last enemy, Time freezes\n" +
+                                              "and your remaining bullets will hit the next wave\n"+
+                                              "But the same goes for enemy bullets on you \n"+
+                                              "6.There are also random speed demon bullets\n"+
+                                              "7.The last few enemys won't shoot much\n" +
+                                              "So you can set up bullets for next round\n" +
+                                              "8.To play again,Options->close->SpaceInvaders");
+                             
+                             a.show();
+                         });
+                         });
+              t.setDaemon(true);
+              t.start();
 
-/*    public void animated(Button playSpace,Button play2048,Text gi,Text le,Text text,Rectangle box)
-      box = new Rectangle(50, -280, 400, 200);
-        box.setFill(Color.DARKBLUE);
-        gi = new Text(-180, 150, "Gi");
-        gi.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
-        gi.setFill(Color.WHITE);
-        gi.setStroke(Color.BLACK);
-        gi.setStrokeWidth(5);
-        le = new Text(540, 150, "Le");
-        le.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
-        le.setFill(Color.RED);
-        le.setStroke(Color.WHITE);
-        le.setStrokeWidth(5);
-        play2048 = new Button("Play 2048!");
-        play2048.setLayoutX(100);
-        play2048.setLayoutY(300);
-        playSpace = new Button("Play Space Invaders!");
-        playSpace.setLayoutX(250);
-        playSpace.setLayoutY(300);
-        text = new Text(-490,15,"Authors: Gi Suen and Kyle Mettile " +
-                        "| Application Title: cs1302-arcade");
-        group.getChildren().addAll(box, gi, le, play2048, playSpace,text);
-        EventHandler<ActionEvent> handler = e -> {
-          box.setY(box.getY() + 6); //go to 20
-          gi.setX(gi.getX() + 6); //go to 120
-          le.setX(le.getX() - 6); //go to 240
-          text.setX(text.getX()+10);
-          };
-          return handler;
-          
-          KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.05), handler);
-          Timeline timeline = new Timeline();
-          timeline.setCycleCount(50);
-          timeline.getKeyFrames().add(keyFrame);
-        */
-    
-        
+    }
 
 } // ArcadeApp
