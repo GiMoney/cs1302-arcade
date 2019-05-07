@@ -218,7 +218,7 @@ public class Board2048 extends Group {
      * the board that is empty.
      */
     public void randTile() {
-	int rand = 2 * ((int)(Math.random()) * 2 + 1);
+	int rand = 2 * ((int)(Math.random() * 2 + 1));
 	int x; //x coord
 	int y; //y coord
 	do {

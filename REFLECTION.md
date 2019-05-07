@@ -10,7 +10,7 @@ that the Markdown is transformed into nice looking HTML.
  1. **DONE:** We finished up all the finishing touches to our games. For 2048, we completed the score
     fuctionality of the game and fixed some bugs that happend. With Space Invaders, we finished up the visual
     style of it and some bugs that included invincibility lasting too long the aliens not moving around correctly.
-    We also completed the extra credit for the animated intro for our main arcade app.
+    We also completed the EXTRA CREDIT for the animated intro for our main arcade app.
 
  2. **PROB:** We attempted to do the high score table for the game but we could figure out how to read our
     files. In 2048, we had some trouble with threads not working correctly with the EventDispatch thread. As mentioned
