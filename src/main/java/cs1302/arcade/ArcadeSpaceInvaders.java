@@ -44,14 +44,11 @@ import javafx.scene.control.Menu;
 
 /**
  *This is Arcade game called Space Invaders
- * probably will change dramatically
  */
 public class ArcadeSpaceInvaders extends Scene{
     AnimationTimer timer; // animationt imer
     Pane root = new Pane(); // makes a pane
-    // List<ImageView> monsters = new ArrayList<ImageView>();
-    Monster[][]  monsters = new Monster[7][6];
-//     Hitbox[][] hitbox = new Hitbox[6][6];
+    Monster[][]  monsters = new Monster[8][6];
     ImageView player; // player
     Rectangle dotR = new Rectangle(); // for the pew pew
     Rectangle dotR1 = new Rectangle(); // for the pew pew
@@ -64,30 +61,31 @@ public class ArcadeSpaceInvaders extends Scene{
     Text points; // the points
     Text rounds;
     int numPoints,hit = 0; // the number of points
-    int numLives = 10000; // the number of lives
+    int numLives = 2; // the number of lives
     int highscore =numPoints;
     boolean moveleft;
     boolean movedown,playerhit =false;
     int pressed,mpress = 0;
-    Shell[] shell = new Shell[4];
+
     int killed =0;
     double enemyspeed = 2.0;
     boolean game = true;
     Timeline timeline;
     
 /**
- *This creates my stage that holds all the magic  
+ *This is the main constructor of the game
+ *@param main Scene
  */
     public ArcadeSpaceInvaders(Scene main) {
-        
-        super(new Pane(), 600, 500);
-        if(game){
-            
+        super(new Pane(), 650, 500);
+        if(game){ // plays the game
             this.setRoot(root);
+            
             MenuBar menubar = new MenuBar();
             Menu options = new Menu("Options");
             menubar.getMenus().add(options);
             MenuItem close = new MenuItem("Close");
+            
             close.setOnAction(e -> {
                     Thread t = new Thread(() -> {
                             Stage swap = (Stage) this.getWindow();
@@ -96,566 +94,474 @@ public class ArcadeSpaceInvaders extends Scene{
                     t.setDaemon(true);
                     t.start();
          });
-            
             options.getItems().addAll(close);
             root.getChildren().add(menubar);
             root.setStyle("-fx-background-color: black;");
-            
-            
-            //life and points       
-            lives = new Text("Lives: 2");
-            lives.setLayoutX(20);
-            lives.setLayoutY(30);
-            lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
-            lives.setFill(Color.GREEN);
-            points = new Text("Points: 0");
-            points.setLayoutX(470);
-            points.setLayoutY(30);
-            points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
-            points.setFill(Color.GOLD);
-            rounds = new Text("Wave: 1");
-            rounds.setLayoutX(250);
-            rounds.setLayoutY(30);
-            rounds.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
-            rounds.setFill(Color.BLUE);
-            root.getChildren().addAll(lives, points,rounds);
-            //player
+            text();//makes the texts
             player = player();
-  
             root.getChildren().add(player);
-            for(int i =0;i < 7;i++){
-                for(int j = 0;j<6;j++){
-                    if(i==6){
-                        monsters[i][j] = new Monster(i,j);
-                        monsters[i][j].setDisable(true);
-                        //root.getChildren().add(monsters[i][j]);
-                    }
-                    else{
-                    monsters[i][j] = new Monster(i,j);
-                    root.getChildren().add(monsters[i][j]);
-                    }
-            }
-        
-            }
-
-            for(int i = 0; i<4;i++){
-                shell[i] = new Shell(i,375);
-                root.getChildren().add(shell[i]);
-            }
-    
-            /*ArrayList bullets = mag;
-            for (int i = 0; i < bullets.size(); i++) {
-                Bullet laser = (Bullet) bullets.get(i);
-                if (laser.isVisible() == true) {
-                    laser.update();
-            
-                } else {
-                    bullets.remove(i);
-                }
-            }
-    
-            */
-            
-            timer = new AnimationTimer() {
-                    @Override
-                    public void handle(long arg0) {
-                        gameUpdate();
-                    }
-                };
-            timer.start();
-       
-            //timeline for making monsters shoots every few seconds
-       
-            timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-            }));
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-        
-            //moving player
-            this.setOnKeyPressed(e->{                     
-                    if(e.getCode() == KeyCode.RIGHT) {
-                        if(player.getLayoutX() >= 540){
-                            player.setLayoutX(player.getLayoutX());
-                        }
-                        else{ 
-                            player.setLayoutX(player.getLayoutX() + 15);
-                        }
-                        
-                    }
-                    if(e.getCode() == KeyCode.LEFT) {
-                        if(player.getLayoutX() <= 0){
-                            player.setLayoutX(player.getLayoutX());
-                        }
-                        else{
-                            player.setLayoutX(player.getLayoutX() - 15);
-                        }
-                        
-                    }
-                    if((e.getCode() == KeyCode.SPACE )){
-                        shoot();
-                        shoot1();
-                        //dotR = new Rectangle(player.getLayoutX()+20,player.getLayoutY()+5,4,10);
-                        for(int i = pressed; i < mag.size();i++){
-                            root.getChildren().add(mag.get(i));
-                            // if(dotR!=null){
-                            update(mag.get(i));
-                            //   }
-                            
-                            try{
-                                if(mag1.get(i) ==null){
-                                }
-                                else{
-                                    root.getChildren().add(mag1.get(i));
-                                }
-                                if(dotR1 !=null){
-                            
-                                    update1(mag1.get(i));
-                                }
-                            }
-                            catch(Exception o){
-                            }
-                            pressed++;
-                        }
-                    }
-                
-                });
+            create();
+            press();
         }
     }
+    /**
+     *This method controls what each key does
+     */
+    public void press(){
+         this.setOnKeyPressed(e->{
+                 if(e.getCode() == KeyCode.RIGHT) { // if right is pressed
+                     if(player.getLayoutX() >= 600){ 
+                             player.setLayoutX(player.getLayoutX());
+                     }  // makes it move to the right
+                         else{
+                             player.setLayoutX(player.getLayoutX() + 25);
+                         }
+                     }
+                 if(e.getCode() == KeyCode.LEFT) {//if left is pressed
+                         if(player.getLayoutX() <= 0){
+                             player.setLayoutX(player.getLayoutX());
+                         } // makes it move to the left
+                         else{
+                             player.setLayoutX(player.getLayoutX() - 25);
+                         }
+                     }
+                 if((e.getCode() == KeyCode.SPACE )){ // if space is pressed
+                         shoot();
+                         shoot1(); // both the enemy and the player will shoot
+                         for(int i = pressed; i < mag.size();i++){
+                             root.getChildren().add(mag.get(i));
+                             update(mag.get(i)); // adds rounds to the magazine
+                             try{
+                                 if(mag1.get(i) ==null){
+                                 }
+                                 else{
+                                     root.getChildren().add(mag1.get(i));
+                                 }
+                                 if(dotR1 !=null){
+                                     update1(mag1.get(i)); // adds rounds the the mag
+                                 }
+                             }
+                             catch(Exception o){
+                             }
+                             pressed++;
+                         }
+                     }
+             });
+    }
+    /**
+     *This helper method creates the monsters
+     */
+    public void create(){
+        for(int i =0;i < 8;i++){
+                 for(int j = 0;j<6;j++){
+                     if(i>=6){
+                         monsters[i][j] = new Monster(i,j); // buffer monsters
+                         monsters[i][j].setDisable(true);
+                     }
+                     else{
+                         monsters[i][j] = new Monster(i,j); // regular monsters
+                         root.getChildren().add(monsters[i][j]);
+                     }
+                 }
 
+             }
+
+        timer = new AnimationTimer() { // animation timer for bullets
+                     @Override
+                     public void handle(long arg0) {
+                         gameUpdate();
+                     }
+                 };
+             timer.start();
+
+             //timeline for making monsters shoots every few seconds
+
+             timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+             }));
+             timeline.setCycleCount(Animation.INDEFINITE);
+             timeline.play();
+
+
+    }
+    /**
+     *This helper method creates the texts you see on the top
+     */
+    public void text(){
+        lives = new Text("Lives: 2"); // give out lives
+        lives.setLayoutX(20);
+        lives.setLayoutY(50);
+        lives.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
+        lives.setFill(Color.GREEN);
+        points = new Text("Points: 0"); // tells you the points
+        points.setLayoutX(470);
+        points.setLayoutY(50);
+        points.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 20));
+        points.setFill(Color.GOLD);
+        rounds = new Text("Wave: 1"); // tells you the wave
+        rounds.setLayoutX(250);
+        rounds.setLayoutY(50);
+        rounds.setFont(Font.font("verdana", FontWeight.MEDIUM,FontPosture.REGULAR, 20));
+        rounds.setFill(Color.BLUE);
+        root.getChildren().addAll(lives, points,rounds);
+        
+    }
+    /**
+     *This method controls the players bullets speed
+     @param dotR Rectangle
+    */
     public void update(Rectangle dotR){
-        // if(dotR == null){
-
-        // }
-        // else{
         boolean visible = true;
         double speed = 7.0;
         double y = dotR.getY();
-        y = y - (speed +enemyspeed);
-        dotR.setY(y);
+        y = y - (speed +enemyspeed); // speed increases as the rounds go by
+        dotR.setY(y); 
         if(y <100){
-            visible =false;
-            // mag.remove(dotR);
+            visible =false; 
         }
-        hit(dotR);
-        //  for(Monster[] u:monsters){
-        //  for(Monster p:u){
-        // }
+        hit(dotR); // checks if it hit something
     }
 
-    
+    /**
+     *This method checks if the bullet hit the enemy
+     *@param dotR Rectangle
+     *@throw NullPointer Exception - null enemys
+     */
     public void hit(Rectangle dotR) throws NullPointerException{
-        boolean killedOnce = false;
+        boolean killedOnce = false; // if havent killed yet
         if(dotR.getY() < 100){
-            root.getChildren().remove(dotR);
+            root.getChildren().remove(dotR); // removes bullet if goes too far
         }
-         
         for(int j =0;j<6;j++){
-            // if(killedOnce){
-            //  break;
-            //}
             for(int k =0;k<6;k++){
                 if(monsters[j][k] == null || dotR == null){
-                    
                 }
-                else if(//dotR.getX() == monsters[j][k].getX() && dotR.getY() == monsters[j][k].getY())
+                else if(
                     ((dotR.getX() > monsters[j][k].getX())
                      && ((dotR.getX() < monsters[j][k].getX()+30))
                      && ((dotR.getY() > monsters[j][k].getY())
                          && ((dotR.getY() < monsters[j][k].getY()+30 )))))
                     
-                {
-                    dotR = null;
+                { // if the bullet hits the enemy
+                    dotR = null; // dead bullet
                     root.getChildren().remove(dotR); 
-                     
-                      
                     root.getChildren().remove(monsters[j][k]);
-                    monsters[j][k] = null;
+                    monsters[j][k] = null; // removes the bullet and monster and make them null
                     dotR1=null;
-                    //enemyspeed=enemyspeed +.01;
-                    killedOnce = true;
-                    killed++;
-                    numPoints += 10;
+                    killedOnce = true; // killed
+                    killed++; // add killed
+                    numPoints += 10; // adds points
                     points.setText("Points: " + String.valueOf(numPoints));
                 }
             }
-             
+            
         }
     }
     
-    
+    /**
+     *This method will shoot the actual rectangle bullet
+     */
     public void shoot(){
-        dotR = new Rectangle(player.getLayoutX()+20,player.getLayoutY()+5,4,10);
-        dotR.setStroke(Color.YELLOW);
+        dotR = new Rectangle(player.getLayoutX()+12,player.getLayoutY()+5,4,10);
+        dotR.setStroke(Color.YELLOW); // makes the bullet yellow
         dotR.setFill(Color.YELLOW);
-        //  Bullet bullet = new Bullet((int)player.getX()-7,(int)player.getY()+18);
-        hit(dotR);
-        mag.add(dotR);
+        hit(dotR); //hecks if the bullet hit something
+        mag.add(dotR);// adds the bullet to the mag
          
     }
-     
+    /**
+     *This method will shoot the enemy rectangle at random locations
+     *depending on how fast the player is shooting
+     */
     public void shoot1(){
         Random r = new Random();
         int num = r.nextInt((5 - 0) + 1) + 0;
-       
         if((monsters[num][num] == null)){
-            // dotR1=null;
-            mag1.add(dotR1);
-          
+            mag1.add(dotR1); // adds the bullet
         }
         else{
-            //monsters[num][num].setLayoutX(getX());
             dotR1 = new Rectangle(monsters[num][num].getX(),monsters[num][num].getY(),4,10);
-          
-          
-          
-            // if(monsters[num][num].getX() >=560){
-            //  moveleft = true;
-            // }
-            if(monsters[num][num].getX() <= 0){
-                moveleft= false;
-            }
-            
-            dotR1.setStroke(Color.RED);
-            dotR1.setFill(Color.RED);
-            hit1(dotR1);
-            mag1.add(dotR1);
-       
-
+            if(monsters[num][num].getX() >=700) {
+                moveleft = true; // if the monster is too far to the right
+                 System.out.println("1");
+             }
+             if(monsters[num][num].getX() <= 0){
+                 moveleft= false;//if the monster is too far to the left
+                 System.out.println("A");
+             }
+             dotR1.setStroke(Color.RED); // sets the bullets color to red
+             dotR1.setFill(Color.RED);
+             hit1(dotR1); // checks if hit
+             mag1.add(dotR1); // adds the bullet
         }
     }
-    
+    /**
+     *This method updates the enemybullet and moves it
+     *@param dotR1 Rectangle
+     */
     public void update1(Rectangle dotR1){
         if(dotR1 == null){
             root.getChildren().remove(dotR1);
-        }
+        } // removes if the null bullet
         else{
             if(dotR1.getY() >=500){
-                hit1(dotR1);
-                root.getChildren().remove(dotR1);
+                hit1(dotR1); // if past a point checks for hit
+                root.getChildren().remove(dotR1); // else remove cause too far
             }else{
                 double speed1 = 3.0;
                 double y1 = dotR1.getY();
-                y1 = y1 + speed1+enemyspeed;
-                dotR1.setY(y1);
+                y1 = y1 + speed1+enemyspeed; // adds speed based on round
+                dotR1.setY(y1); 
                 dotR1.setX(dotR1.getX());
-                hit1(dotR1);
+                hit1(dotR1); // checks if it hit
             }
 
         }
     }
-    
+    /**
+     *This mthod checks if the enemy bullet hit the player
+     *@param dotR1 Rectangle
+     *@throw NullPointerException
+     */
     public void hit1(Rectangle dotR1) throws NullPointerException{
         if(dotR1 ==null){
             root.getChildren().remove(dotR1);
-            playerhit=false;
+            playerhit=false; // players isnt hit cause bulet is null
         }
         else{
             try{
                 if(!playerhit){
-                    // for(Rectangle d: mag1){
                     if(dotR1.getY() >=500){
                         root.getChildren().remove(dotR1);
-                        dotR1 = null;
+                        dotR1 = null; // if the bullet strays past the enemy
                     }
-                
-                    else if( !player.isDisable() && ((dotR1.getX() > player.getLayoutX())
-                              && ((dotR1.getX() < player.getLayoutX()+25))
-                              && ((dotR1.getY() > player.getLayoutY())
-                                  && ((dotR1.getY() < player.getLayoutY()+25 )))))
-                    {
-                    
-                        //System.out.println("TRUE1");
+                    else if( !player.isDisable()
+                             && ((dotR1.getX() > player.getLayoutX())
+                                 && ((dotR1.getX() < player.getLayoutX()+30))
+                                 && ((dotR1.getY() > player.getLayoutY())
+                                     && ((dotR1.getY() < player.getLayoutY()+30 )))))
+                    { // if the bullet hits the player
                         playerhit= true;
-                        player.setDisable(true);
-
-                        int temp = numLives;
-                        
+                        player.setDisable(true); // gain invinsibility
                         dotR1 = null;
-                        root.getChildren().remove(dotR1);
-                        
-                        player.setLayoutX(250);
-                        
-                        System.out.println("TRUE1");
-                        
-                        //numLives--;
+                        root.getChildren().remove(dotR1); // removes bullet
+                        player.setLayoutX(275);
                         if(player.isDisable()){
-                            Thread.sleep(1);
-                            
-                            numLives--;
-                            
-                            
-                            player.setDisable(false);
-                            
+                            Thread.sleep(1); // stays invincsible for a second
+                            numLives--; // decreases lives to 1
+                            player.setDisable(false); // no longer invincsible
                         }
                         lives.setText("Lives: " + String.valueOf(numLives));
-                        
                     }
                 }
-            
             }catch(Exception p){};
         }
     }
              
- 
+    /**
+     *Returns the mag of the rectangle bullets
+     */
     public ArrayList getMag(){
         return mag;
     }
-
+    /**
+     *The main update that controls the enemymovement and checks if the win or lose
+     */
     public void gameUpdate() {
         player.setDisable(false);
-        monstersMove(monsters);
+        monstersMove(monsters); // moves the monsters
         for(int i = 0; i < mag.size();i++){
-            update(mag.get(i));
-            hit(mag.get(i));
-            update1(mag1.get(i));
-            hit1(mag1.get(i));
+            update(mag.get(i)); // updates bullets
+            hit(mag.get(i)); // checks if hit
+            update1(mag1.get(i)); // updates enemy bullets
+            hit1(mag1.get(i)); // checks it hit
         }
-
-        //is Player win
-        isWin();
-        //is Player lost
-        isLost();        
+        isWin(); // goes to next round
+        isLost(); // you lost
     }
     
  
-    
+    /**
+     *This method will move the 2D array of monsters
+     @param monsters Monster[][]
+     @throws NullPointerException
+     */
     public void monstersMove(Monster[][] monsters) throws NullPointerException{
-        if(killed ==0){
+        if(killed ==0){ // if havent kiled yet
             for (Monster[] u: monsters) {
                  Arrays.stream(u)
                   .filter(val -> val != null)
-                  .toArray();
-                for (Monster mon: u) {
+                     .toArray(); // filters out all of the null monsters
+                   for (Monster mon: u) {
                     if(mon == null){
                     }
-                    else if(mon.getX() >=625){
-                        moveleft=true;
-                    }
+                     else if(mon.getX() >=750){
+                         moveleft=true;
+                     }//move to the left
                     else if(mon.getX() <=0){
                         moveleft=false;
-                    }
+                    }//move to the right
                     if(mon ==null){
                     }
                     if ((!moveleft) && mon !=null){            
                         mon.moveRight();
-                    }
+                    }//move to the right
                      if ((moveleft) && mon!=null){
-                        mon.moveLeft();
-                    }
+                         mon.moveLeft();
+                     }//move to the left
                 }
             }
         }
         else{
-            for(int i =0;i<7;i++){
-                for(int j= 0;j<6;j++){
-                    if(monsters[i][j] ==null){
-                    }
-
-                    else if(monsters[i][j].getX() >=625){
-                        moveleft=true;
-                    }
-                    else if(monsters[i][j].getX() <=0){
-                        moveleft=false;
-                    }
-                    
-                    if(monsters[i][j] ==null){
-                    }
-                    if ((!moveleft) && monsters[i][j] !=null){
-                        monsters[i][j].moveRight();
-                    }
-                    if ((moveleft) && monsters[i][j] !=null){
-                         monsters[i][j].moveLeft();                  }
+            killedMove(monsters); // move with killed monsters
+        }
+    }
+    /**
+     *This helper method will move the monsters even after some of them have died
+     @param monsters Monster[][]
+     @throws NullPointerException
+     */
+    public void killedMove(Monster[][] monsters) throws NullPointerException{
+        for(int i =0;i<8;i++){
+            for(int j= 0;j<6;j++){
+                if(monsters[i][j] ==null){
+                } // dont do anything
+                else if(monsters[i][j].getX() >=750){
+                    moveleft=true;
+                }//move to the left
+                else if(monsters[i][j].getX() <=0){
+                    moveleft=false;
+                    }//move to the right
+                if(monsters[i][j]==null){
                 }
+                if ((!moveleft) && monsters[i][j]!=null){
+                    monsters[i][j].moveRight();
+                } //move tot the right
+                if ((moveleft) && monsters[i][j] !=null){
+                    monsters[i][j].moveLeft();
+                } //move to the left
             }
         }
     }
-     
-     
-     
+    
+    /**
+     *This will create the player
+     *@return i ImageView
+     */
     public ImageView player() {
-        //make sure to change later because image is ugly
-        // String url = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
         ImageView i = new ImageView(new Image("space/Spaceship-PNG-File.png"));
-        i.setLayoutX(225);
-        i.setLayoutY(450);
-        i.setFitHeight(25);
-        i.setFitWidth(25);
+        i.setLayoutX(225); // self explanitory
+        i.setLayoutY(450);// set the player to a coordinate
+        i.setFitHeight(30);
+        i.setFitWidth(30);
         return i;
     }
-
+    /**
+     *This will create the monster at a coordinate
+     *@param x double
+     *@param y double
+     *@return i ImageView
+     */
     public ImageView monster(double x, double y) {
-  
-        //String url1 = "http://www.pngmart.com/files/4/Space-Invaders-PNG-Free-Download.png";
         ImageView i = new ImageView(new Image("space/Space-Invaders-PNG-Free-Download.png"));
-        i.setLayoutX(x);
-        i.setLayoutY(y);
+        i.setLayoutX(x); // self explanitory
+        i.setLayoutY(y); // makes the player at the coordinate
         i.setFitHeight(50);
         i.setFitWidth(50);
-      
-        return i;
+        return i; 
     }
- 
+    /**
+     *Method to restart for the next, more difficult round
+     */
     public void isWin(){
         if(killed == 36 * round) {
-            round++;
-            timer.stop();
-            timeline.pause();
-            root.getChildren().remove(player);
-            for(int i=0;i<4;i++){
-                root.getChildren().remove(shell[i]);
-            }
+            round++; // adds the next round
+            timer.stop(); 
+            timeline.pause(); // stops everything to remove and add
+            root.getChildren().remove(player); //removes player
             for(Rectangle r:mag){
                 r = null;
-                root.getChildren().remove(r);
+                root.getChildren().remove(r);  // empties the mag
             }
             for(Rectangle r1:mag1){
                 r1= null;
-                root.getChildren().remove(r1);
+                root.getChildren().remove(r1); //empties the enemy mag
             }
-            for(int i =0;i < 7;i++){
+            for(int i =0;i < 8;i++){
                 for(int j = 0;j<6;j++){
-                    if(i !=6){
-                    root.getChildren().remove(monsters[i][j]);
-                    monsters[i][j] = new Monster(i,j);
-                    
-                    root.getChildren().add(monsters[i][j]);
+                    root.getChildren().remove(monsters[i][j]);//removes monsters
+                    monsters[i][j] = new Monster(i,j); // adds the monsters agian
+                    if(i !=6 && i!=7){
+                        root.getChildren().add(monsters[i][j]); // hides the buffer monsters
                     }
-                   
-                }  
-            }
-            root.getChildren().add(player);
-            for(int i = 0; i<4;i++){
-                shell[i] = new Shell(i,375);
-                root.getChildren().add(shell[i]);
-            }
-            player.setDisable(true);
+                }
+            }  
+            root.getChildren().add(player); //adds the player
+            player.setDisable(true); // disables the player for a bit
             timer.start();
-            timeline.play();
-            highscore = numPoints;
+            timeline.play(); // start the timer again
+            highscore = numPoints; // makes high score equal the current
             points.setText("Points: " + String.valueOf(numPoints));                
             rounds.setText("Wave: "+ String.valueOf(round));
-            enemyspeed=enemyspeed +.5;
+            enemyspeed=enemyspeed +.45; // increases the enemy speed each round
         }
     }
 
 
-    
+    /**
+     *Method to check if the player lost
+     */
     public void isLost(){
-        if(numLives <=0) {
+        if(numLives <=0) { // if they dead
             Text text = new Text();
-            text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 50));
+            text.setFont(Font.font("verdana", FontWeight.MEDIUM, FontPosture.REGULAR, 25));
             text.setX(180);
             text.setY(250);    
             text.setFill(Color.WHITE);
             text.setStrokeWidth(2);
             text.setStroke(Color.RED);        
-            text.setText("YOU LOST");
+            text.setText("YOU LOST" + "\n" + "close the game and play again");
             root.getChildren().add(text);
-            timer.stop();
-            game = false;
+            timer.stop(); // stops game
+            game = false; // your dead gg close 
         }
     }
-
+    /**
+     *This class is of the monsters
+     */
     class Monster extends ImageView{
         Image img = new Image("space/Space-Invaders-PNG-Free-Download.png");
-        Rectangle rekt = new Rectangle();
         public Monster(int x,int y){
-            super();
-            ImagePattern imagePattern = new ImagePattern(img);
-            rekt.setFill(imagePattern);
+            super(); // makes the monsters spaced out in the 2d array
             this.setX(100+(x*50) +(x*5));
             this.setY(100+(y*25) +(y*5));
-            this.setImage(img);
+            this.setImage(img); // self explanatory
             this.setFitWidth(25);
             this.setFitHeight(25);
 
              
         }
 
-       
+        /**
+         *This method moves the monster to the left
+         */
         void moveLeft(){
             if(getX() == 0){
-                moveleft = false;
+                moveleft = false; // if it reaches the end stp and move right
             }
             movedown = false;
-            setX(getX()-enemyspeed);
+            setX(getX()-enemyspeed); // moves the left faster and faster each round
+            
         }
-         
+
+        /**
+          *This method moves the monster to the left
+          */
         void moveRight(){
-            if(getX() == 625-enemyspeed){
-                moveleft = true;
-                 
-            }
-            movedown = false;
-            setX(getX()+enemyspeed);
+             if(getX() == 800){
+                 moveleft = true; // if it reaches to far, moves to the left
+             }
+             movedown = false; 
+             setX(getX()+enemyspeed);//moves the right faster and faster each round
         }
-      
     }
-     
-    /*class Bullet extends Rectangle{
-      int x,y,speed;
-      boolean visible;
-//         Image img = new Image(
-public Bullet(int x1,int y1){
-x=x1;
-y=y1;
-speed = 10;
-visible = true;
-}
-         
-public void update(){
-y = y - speed;
-if(y <500){
-visible =false;
-}
-
-}
-/*
-public int getX(){
-return x;
-} 
-
-public int getY(){
-return y;
-}
-
-public int getSpeed(){
-return speed;
-}
-/*
-public boolean isVisible(){
-return visible;
-}
-
-public int setX(){
-this.x=x;
-return x;
-}
-public int setY(){
-this.y=y;
-return y;
-}
-public ArrayList getMag(){
-return mag;
-}
-
-         
-}
-    */
-    class Shell extends ImageView{
-        Image shellimg = new Image("http://i.imgur.com/eAok2Eg.png");
-
-        public Shell(int x, int y){
-            super();
-            this.setX(55 +(x*100) +(x*40));
-            this.setY(y);
-            this.setImage(shellimg);
-            this.setFitWidth(75);
-            this.setFitHeight(50);
-        }
-         
-    }
-
-             
-     
 }
